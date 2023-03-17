@@ -10,6 +10,8 @@ RANDOM_STATE = 21
 
 
 def nested_cv(data, labels, num_folds_outer, num_folds_inner, hyperparams):
+    # TODO: split over reader ids, such that the same reader is either in train or test set but not both
+
     """ Performs nested cross-validation with hyperparameter tuning using grid search. """
 
     outer_scores = []
