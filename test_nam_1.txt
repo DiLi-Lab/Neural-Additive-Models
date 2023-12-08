@@ -1,0 +1,2829 @@
+Dataset: PoTeC, Size: 900
+Cross-val fold: 1/5
+Started training with logdir logs/nam_cv/fold_1/split_1
+Model: "nam"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ feature_nn (FeatureNN)      multiple                  68176     
+                                                                 
+ feature_nn_1 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_2 (FeatureNN)    multiple                  23824     
+                                                                 
+ feature_nn_3 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_4 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_5 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_6 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_7 (FeatureNN)    multiple                  7324      
+                                                                 
+ feature_nn_8 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_9 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_10 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_11 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_12 (FeatureNN)   multiple                  7720      
+                                                                 
+ feature_nn_13 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_14 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_15 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_16 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_17 (FeatureNN)   multiple                  23560     
+                                                                 
+ feature_nn_18 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_19 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_20 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_21 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_22 (FeatureNN)   multiple                  23164     
+                                                                 
+ feature_nn_23 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_24 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_25 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_26 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_27 (FeatureNN)   multiple                  39268     
+                                                                 
+ feature_nn_28 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_29 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_30 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_31 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_32 (FeatureNN)   multiple                  23164     
+                                                                 
+ feature_nn_33 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_34 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_35 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_36 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_37 (FeatureNN)   multiple                  39664     
+                                                                 
+ feature_nn_38 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_39 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_40 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_41 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_42 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_43 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_44 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_45 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_46 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_47 (FeatureNN)   multiple                  59728     
+                                                                 
+ feature_nn_48 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_49 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_50 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_51 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_52 (FeatureNN)   multiple                  49564     
+                                                                 
+ feature_nn_53 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_54 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_55 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_56 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_57 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_58 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_59 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_60 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_61 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_62 (FeatureNN)   multiple                  43096     
+                                                                 
+ feature_nn_63 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_64 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_65 (FeatureNN)   multiple                  11284     
+                                                                 
+ feature_nn_66 (FeatureNN)   multiple                  11284     
+                                                                 
+ feature_nn_67 (FeatureNN)   multiple                  2308      
+                                                                 
+ feature_nn_68 (FeatureNN)   multiple                  11284     
+                                                                 
+ feature_nn_69 (FeatureNN)   multiple                  11284     
+                                                                 
+ feature_nn_70 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_71 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_72 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_73 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_74 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_75 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_76 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_77 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_78 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_79 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_80 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_81 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_82 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_83 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_84 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_85 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_86 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_87 (FeatureNN)   multiple                  2968      
+                                                                 
+ feature_nn_88 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_89 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_90 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_91 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_92 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_93 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_94 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_95 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_96 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_97 (FeatureNN)   multiple                  2704      
+                                                                 
+ feature_nn_98 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_99 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_100 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_101 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_102 (FeatureNN)  multiple                  2836      
+                                                                 
+ feature_nn_103 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_104 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_105 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_106 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_107 (FeatureNN)  multiple                  2836      
+                                                                 
+ feature_nn_108 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_109 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_110 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_111 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_112 (FeatureNN)  multiple                  35836     
+                                                                 
+ feature_nn_113 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_114 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_115 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_116 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_117 (FeatureNN)  multiple                  32668     
+                                                                 
+ feature_nn_118 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_119 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_120 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_121 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_122 (FeatureNN)  multiple                  28840     
+                                                                 
+ feature_nn_123 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_124 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_125 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_126 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_127 (FeatureNN)  multiple                  24616     
+                                                                 
+ feature_nn_128 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_129 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_130 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_131 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_132 (FeatureNN)  multiple                  27652     
+                                                                 
+ feature_nn_133 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_134 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_135 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_136 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_137 (FeatureNN)  multiple                  31612     
+                                                                 
+ feature_nn_138 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_139 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_140 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_141 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_142 (FeatureNN)  multiple                  31348     
+                                                                 
+ feature_nn_143 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_144 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_145 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_146 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_147 (FeatureNN)  multiple                  23428     
+                                                                 
+ feature_nn_148 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_149 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_150 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_151 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_152 (FeatureNN)  multiple                  23428     
+                                                                 
+ feature_nn_153 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_154 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_155 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_156 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_157 (FeatureNN)  multiple                  25804     
+                                                                 
+ feature_nn_158 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_159 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_160 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_161 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_162 (FeatureNN)  multiple                  23824     
+                                                                 
+ feature_nn_163 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_164 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_165 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_166 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_167 (FeatureNN)  multiple                  35044     
+                                                                 
+ feature_nn_168 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_169 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_170 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_171 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_172 (FeatureNN)  multiple                  34516     
+                                                                 
+ feature_nn_173 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_174 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_175 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_176 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_177 (FeatureNN)  multiple                  4420      
+                                                                 
+ feature_nn_178 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_179 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_180 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_181 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_182 (FeatureNN)  multiple                  33328     
+                                                                 
+ feature_nn_183 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_184 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_185 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_186 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_187 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_188 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_189 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_190 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_191 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_192 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_193 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_194 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_195 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_196 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_197 (FeatureNN)  multiple                  5740      
+                                                                 
+ feature_nn_198 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_199 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_200 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_201 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_202 (FeatureNN)  multiple                  35044     
+                                                                 
+ feature_nn_203 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_204 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_205 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_206 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_207 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_208 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_209 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_210 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_211 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_212 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_213 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_214 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_215 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_216 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_217 (FeatureNN)  multiple                  9040      
+                                                                 
+ feature_nn_218 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_219 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_220 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_221 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_222 (FeatureNN)  multiple                  17752     
+                                                                 
+ feature_nn_223 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_224 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_225 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_226 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_227 (FeatureNN)  multiple                  6136      
+                                                                 
+ feature_nn_228 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_229 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_230 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_231 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_232 (FeatureNN)  multiple                  26068     
+                                                                 
+ feature_nn_233 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_234 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_235 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_236 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_237 (FeatureNN)  multiple                  35704     
+                                                                 
+ feature_nn_238 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_239 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_240 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_241 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_242 (FeatureNN)  multiple                  36100     
+                                                                 
+ feature_nn_243 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_244 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_245 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_246 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_247 (FeatureNN)  multiple                  35968     
+                                                                 
+ feature_nn_248 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_249 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_250 (FeatureNN)  multiple                  30556     
+                                                                 
+ feature_nn_251 (FeatureNN)  multiple                  31348     
+                                                                 
+ feature_nn_252 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_253 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_254 (FeatureNN)  multiple                  9700      
+                                                                 
+ feature_nn_255 (FeatureNN)  multiple                  9700      
+                                                                 
+ feature_nn_256 (FeatureNN)  multiple                  34384     
+                                                                 
+ feature_nn_257 (FeatureNN)  multiple                  34780     
+                                                                 
+ feature_nn_258 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_259 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_260 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_261 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_262 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_263 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_264 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_265 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_266 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_267 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_268 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_269 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_270 (FeatureNN)  multiple                  22372     
+                                                                 
+ feature_nn_271 (FeatureNN)  multiple                  22372     
+                                                                 
+ feature_nn_272 (FeatureNN)  multiple                  49036     
+                                                                 
+ feature_nn_273 (FeatureNN)  multiple                  49564     
+                                                                 
+ feature_nn_274 (FeatureNN)  multiple                  35968     
+                                                                 
+ feature_nn_275 (FeatureNN)  multiple                  36628     
+                                                                 
+=================================================================
+Total params: 15796021 (60.26 MB)
+Trainable params: 15796021 (60.26 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+Early stopping at epoch 80
+Finished training.
+Model 0: Best Epoch 10.0, Individual AUROC: Train 0.844897340530961, Validation 0.6568682871678914
+Cross-val fold: 1/5
+Started training with logdir logs/nam_cv/fold_1/split_1
+Model: "nam"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ feature_nn (FeatureNN)      multiple                  68176     
+                                                                 
+ feature_nn_1 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_2 (FeatureNN)    multiple                  22900     
+                                                                 
+ feature_nn_3 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_4 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_5 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_6 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_7 (FeatureNN)    multiple                  7456      
+                                                                 
+ feature_nn_8 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_9 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_10 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_11 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_12 (FeatureNN)   multiple                  7852      
+                                                                 
+ feature_nn_13 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_14 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_15 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_16 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_17 (FeatureNN)   multiple                  25144     
+                                                                 
+ feature_nn_18 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_19 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_20 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_21 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_22 (FeatureNN)   multiple                  23560     
+                                                                 
+ feature_nn_23 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_24 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_25 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_26 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_27 (FeatureNN)   multiple                  40984     
+                                                                 
+ feature_nn_28 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_29 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_30 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_31 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_32 (FeatureNN)   multiple                  23560     
+                                                                 
+ feature_nn_33 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_34 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_35 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_36 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_37 (FeatureNN)   multiple                  39400     
+                                                                 
+ feature_nn_38 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_39 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_40 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_41 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_42 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_43 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_44 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_45 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_46 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_47 (FeatureNN)   multiple                  62500     
+                                                                 
+ feature_nn_48 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_49 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_50 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_51 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_52 (FeatureNN)   multiple                  50356     
+                                                                 
+ feature_nn_53 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_54 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_55 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_56 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_57 (FeatureNN)   multiple                  2308      
+                                                                 
+ feature_nn_58 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_59 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_60 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_61 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_62 (FeatureNN)   multiple                  44548     
+                                                                 
+ feature_nn_63 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_64 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_65 (FeatureNN)   multiple                  11416     
+                                                                 
+ feature_nn_66 (FeatureNN)   multiple                  11416     
+                                                                 
+ feature_nn_67 (FeatureNN)   multiple                  2308      
+                                                                 
+ feature_nn_68 (FeatureNN)   multiple                  11416     
+                                                                 
+ feature_nn_69 (FeatureNN)   multiple                  11416     
+                                                                 
+ feature_nn_70 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_71 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_72 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_73 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_74 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_75 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_76 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_77 (FeatureNN)   multiple                  2308      
+                                                                 
+ feature_nn_78 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_79 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_80 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_81 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_82 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_83 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_84 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_85 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_86 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_87 (FeatureNN)   multiple                  2968      
+                                                                 
+ feature_nn_88 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_89 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_90 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_91 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_92 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_93 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_94 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_95 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_96 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_97 (FeatureNN)   multiple                  2704      
+                                                                 
+ feature_nn_98 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_99 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_100 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_101 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_102 (FeatureNN)  multiple                  2704      
+                                                                 
+ feature_nn_103 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_104 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_105 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_106 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_107 (FeatureNN)  multiple                  2572      
+                                                                 
+ feature_nn_108 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_109 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_110 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_111 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_112 (FeatureNN)  multiple                  35572     
+                                                                 
+ feature_nn_113 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_114 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_115 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_116 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_117 (FeatureNN)  multiple                  33460     
+                                                                 
+ feature_nn_118 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_119 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_120 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_121 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_122 (FeatureNN)  multiple                  29896     
+                                                                 
+ feature_nn_123 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_124 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_125 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_126 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_127 (FeatureNN)  multiple                  25804     
+                                                                 
+ feature_nn_128 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_129 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_130 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_131 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_132 (FeatureNN)  multiple                  27916     
+                                                                 
+ feature_nn_133 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_134 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_135 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_136 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_137 (FeatureNN)  multiple                  32008     
+                                                                 
+ feature_nn_138 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_139 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_140 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_141 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_142 (FeatureNN)  multiple                  34120     
+                                                                 
+ feature_nn_143 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_144 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_145 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_146 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_147 (FeatureNN)  multiple                  24880     
+                                                                 
+ feature_nn_148 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_149 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_150 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_151 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_152 (FeatureNN)  multiple                  25936     
+                                                                 
+ feature_nn_153 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_154 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_155 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_156 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_157 (FeatureNN)  multiple                  26860     
+                                                                 
+ feature_nn_158 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_159 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_160 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_161 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_162 (FeatureNN)  multiple                  24748     
+                                                                 
+ feature_nn_163 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_164 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_165 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_166 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_167 (FeatureNN)  multiple                  35836     
+                                                                 
+ feature_nn_168 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_169 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_170 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_171 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_172 (FeatureNN)  multiple                  34516     
+                                                                 
+ feature_nn_173 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_174 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_175 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_176 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_177 (FeatureNN)  multiple                  4420      
+                                                                 
+ feature_nn_178 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_179 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_180 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_181 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_182 (FeatureNN)  multiple                  32932     
+                                                                 
+ feature_nn_183 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_184 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_185 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_186 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_187 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_188 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_189 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_190 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_191 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_192 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_193 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_194 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_195 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_196 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_197 (FeatureNN)  multiple                  5608      
+                                                                 
+ feature_nn_198 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_199 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_200 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_201 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_202 (FeatureNN)  multiple                  34384     
+                                                                 
+ feature_nn_203 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_204 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_205 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_206 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_207 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_208 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_209 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_210 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_211 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_212 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_213 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_214 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_215 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_216 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_217 (FeatureNN)  multiple                  9040      
+                                                                 
+ feature_nn_218 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_219 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_220 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_221 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_222 (FeatureNN)  multiple                  18544     
+                                                                 
+ feature_nn_223 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_224 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_225 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_226 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_227 (FeatureNN)  multiple                  6136      
+                                                                 
+ feature_nn_228 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_229 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_230 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_231 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_232 (FeatureNN)  multiple                  27256     
+                                                                 
+ feature_nn_233 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_234 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_235 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_236 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_237 (FeatureNN)  multiple                  36496     
+                                                                 
+ feature_nn_238 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_239 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_240 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_241 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_242 (FeatureNN)  multiple                  36628     
+                                                                 
+ feature_nn_243 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_244 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_245 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_246 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_247 (FeatureNN)  multiple                  36364     
+                                                                 
+ feature_nn_248 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_249 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_250 (FeatureNN)  multiple                  30424     
+                                                                 
+ feature_nn_251 (FeatureNN)  multiple                  31480     
+                                                                 
+ feature_nn_252 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_253 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_254 (FeatureNN)  multiple                  9436      
+                                                                 
+ feature_nn_255 (FeatureNN)  multiple                  9436      
+                                                                 
+ feature_nn_256 (FeatureNN)  multiple                  35044     
+                                                                 
+ feature_nn_257 (FeatureNN)  multiple                  35176     
+                                                                 
+ feature_nn_258 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_259 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_260 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_261 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_262 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_263 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_264 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_265 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_266 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_267 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_268 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_269 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_270 (FeatureNN)  multiple                  22240     
+                                                                 
+ feature_nn_271 (FeatureNN)  multiple                  22240     
+                                                                 
+ feature_nn_272 (FeatureNN)  multiple                  49036     
+                                                                 
+ feature_nn_273 (FeatureNN)  multiple                  49300     
+                                                                 
+ feature_nn_274 (FeatureNN)  multiple                  35836     
+                                                                 
+ feature_nn_275 (FeatureNN)  multiple                  35968     
+                                                                 
+=================================================================
+Total params: 15818725 (60.34 MB)
+Trainable params: 15818725 (60.34 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+Finished training.
+Model 0: Best Epoch 40.0, Individual AUROC: Train 0.9825228229313622, Validation 0.7786885245901639
+Cross-val fold: 1/5
+Started training with logdir logs/nam_cv/fold_1/split_1
+Model: "nam"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ feature_nn (FeatureNN)      multiple                  68176     
+                                                                 
+ feature_nn_1 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_2 (FeatureNN)    multiple                  23164     
+                                                                 
+ feature_nn_3 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_4 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_5 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_6 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_7 (FeatureNN)    multiple                  6400      
+                                                                 
+ feature_nn_8 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_9 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_10 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_11 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_12 (FeatureNN)   multiple                  6796      
+                                                                 
+ feature_nn_13 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_14 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_15 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_16 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_17 (FeatureNN)   multiple                  23428     
+                                                                 
+ feature_nn_18 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_19 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_20 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_21 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_22 (FeatureNN)   multiple                  22240     
+                                                                 
+ feature_nn_23 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_24 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_25 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_26 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_27 (FeatureNN)   multiple                  39928     
+                                                                 
+ feature_nn_28 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_29 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_30 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_31 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_32 (FeatureNN)   multiple                  22636     
+                                                                 
+ feature_nn_33 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_34 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_35 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_36 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_37 (FeatureNN)   multiple                  39268     
+                                                                 
+ feature_nn_38 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_39 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_40 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_41 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_42 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_43 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_44 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_45 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_46 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_47 (FeatureNN)   multiple                  61312     
+                                                                 
+ feature_nn_48 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_49 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_50 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_51 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_52 (FeatureNN)   multiple                  51676     
+                                                                 
+ feature_nn_53 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_54 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_55 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_56 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_57 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_58 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_59 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_60 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_61 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_62 (FeatureNN)   multiple                  45340     
+                                                                 
+ feature_nn_63 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_64 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_65 (FeatureNN)   multiple                  10888     
+                                                                 
+ feature_nn_66 (FeatureNN)   multiple                  10888     
+                                                                 
+ feature_nn_67 (FeatureNN)   multiple                  2308      
+                                                                 
+ feature_nn_68 (FeatureNN)   multiple                  10888     
+                                                                 
+ feature_nn_69 (FeatureNN)   multiple                  10888     
+                                                                 
+ feature_nn_70 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_71 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_72 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_73 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_74 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_75 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_76 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_77 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_78 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_79 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_80 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_81 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_82 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_83 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_84 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_85 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_86 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_87 (FeatureNN)   multiple                  2968      
+                                                                 
+ feature_nn_88 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_89 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_90 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_91 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_92 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_93 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_94 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_95 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_96 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_97 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_98 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_99 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_100 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_101 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_102 (FeatureNN)  multiple                  2704      
+                                                                 
+ feature_nn_103 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_104 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_105 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_106 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_107 (FeatureNN)  multiple                  2836      
+                                                                 
+ feature_nn_108 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_109 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_110 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_111 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_112 (FeatureNN)  multiple                  34516     
+                                                                 
+ feature_nn_113 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_114 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_115 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_116 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_117 (FeatureNN)  multiple                  33460     
+                                                                 
+ feature_nn_118 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_119 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_120 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_121 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_122 (FeatureNN)  multiple                  28840     
+                                                                 
+ feature_nn_123 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_124 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_125 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_126 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_127 (FeatureNN)  multiple                  25012     
+                                                                 
+ feature_nn_128 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_129 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_130 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_131 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_132 (FeatureNN)  multiple                  28180     
+                                                                 
+ feature_nn_133 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_134 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_135 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_136 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_137 (FeatureNN)  multiple                  31216     
+                                                                 
+ feature_nn_138 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_139 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_140 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_141 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_142 (FeatureNN)  multiple                  32404     
+                                                                 
+ feature_nn_143 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_144 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_145 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_146 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_147 (FeatureNN)  multiple                  23824     
+                                                                 
+ feature_nn_148 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_149 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_150 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_151 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_152 (FeatureNN)  multiple                  24352     
+                                                                 
+ feature_nn_153 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_154 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_155 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_156 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_157 (FeatureNN)  multiple                  26464     
+                                                                 
+ feature_nn_158 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_159 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_160 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_161 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_162 (FeatureNN)  multiple                  23956     
+                                                                 
+ feature_nn_163 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_164 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_165 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_166 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_167 (FeatureNN)  multiple                  34516     
+                                                                 
+ feature_nn_168 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_169 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_170 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_171 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_172 (FeatureNN)  multiple                  33856     
+                                                                 
+ feature_nn_173 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_174 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_175 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_176 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_177 (FeatureNN)  multiple                  4288      
+                                                                 
+ feature_nn_178 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_179 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_180 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_181 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_182 (FeatureNN)  multiple                  32668     
+                                                                 
+ feature_nn_183 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_184 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_185 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_186 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_187 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_188 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_189 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_190 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_191 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_192 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_193 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_194 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_195 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_196 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_197 (FeatureNN)  multiple                  5608      
+                                                                 
+ feature_nn_198 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_199 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_200 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_201 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_202 (FeatureNN)  multiple                  33196     
+                                                                 
+ feature_nn_203 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_204 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_205 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_206 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_207 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_208 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_209 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_210 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_211 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_212 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_213 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_214 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_215 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_216 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_217 (FeatureNN)  multiple                  9436      
+                                                                 
+ feature_nn_218 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_219 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_220 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_221 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_222 (FeatureNN)  multiple                  18016     
+                                                                 
+ feature_nn_223 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_224 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_225 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_226 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_227 (FeatureNN)  multiple                  5872      
+                                                                 
+ feature_nn_228 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_229 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_230 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_231 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_232 (FeatureNN)  multiple                  25672     
+                                                                 
+ feature_nn_233 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_234 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_235 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_236 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_237 (FeatureNN)  multiple                  35308     
+                                                                 
+ feature_nn_238 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_239 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_240 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_241 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_242 (FeatureNN)  multiple                  35308     
+                                                                 
+ feature_nn_243 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_244 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_245 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_246 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_247 (FeatureNN)  multiple                  35704     
+                                                                 
+ feature_nn_248 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_249 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_250 (FeatureNN)  multiple                  30556     
+                                                                 
+ feature_nn_251 (FeatureNN)  multiple                  31084     
+                                                                 
+ feature_nn_252 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_253 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_254 (FeatureNN)  multiple                  9568      
+                                                                 
+ feature_nn_255 (FeatureNN)  multiple                  9568      
+                                                                 
+ feature_nn_256 (FeatureNN)  multiple                  34384     
+                                                                 
+ feature_nn_257 (FeatureNN)  multiple                  34912     
+                                                                 
+ feature_nn_258 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_259 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_260 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_261 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_262 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_263 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_264 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_265 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_266 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_267 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_268 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_269 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_270 (FeatureNN)  multiple                  22636     
+                                                                 
+ feature_nn_271 (FeatureNN)  multiple                  22636     
+                                                                 
+ feature_nn_272 (FeatureNN)  multiple                  50092     
+                                                                 
+ feature_nn_273 (FeatureNN)  multiple                  50356     
+                                                                 
+ feature_nn_274 (FeatureNN)  multiple                  36100     
+                                                                 
+ feature_nn_275 (FeatureNN)  multiple                  36628     
+                                                                 
+=================================================================
+Total params: 15796021 (60.26 MB)
+Trainable params: 15796021 (60.26 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+Finished training.
+Model 0: Best Epoch 40.0, Individual AUROC: Train 0.9819824080204294, Validation 0.6111751152073732
+Cross-val fold: 1/5
+Started training with logdir logs/nam_cv/fold_1/split_1
+Model: "nam"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ feature_nn (FeatureNN)      multiple                  68176     
+                                                                 
+ feature_nn_1 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_2 (FeatureNN)    multiple                  23164     
+                                                                 
+ feature_nn_3 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_4 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_5 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_6 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_7 (FeatureNN)    multiple                  7192      
+                                                                 
+ feature_nn_8 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_9 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_10 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_11 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_12 (FeatureNN)   multiple                  7720      
+                                                                 
+ feature_nn_13 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_14 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_15 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_16 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_17 (FeatureNN)   multiple                  25144     
+                                                                 
+ feature_nn_18 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_19 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_20 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_21 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_22 (FeatureNN)   multiple                  23956     
+                                                                 
+ feature_nn_23 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_24 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_25 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_26 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_27 (FeatureNN)   multiple                  40852     
+                                                                 
+ feature_nn_28 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_29 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_30 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_31 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_32 (FeatureNN)   multiple                  22504     
+                                                                 
+ feature_nn_33 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_34 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_35 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_36 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_37 (FeatureNN)   multiple                  40192     
+                                                                 
+ feature_nn_38 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_39 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_40 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_41 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_42 (FeatureNN)   multiple                  67384     
+                                                                 
+ feature_nn_43 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_44 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_45 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_46 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_47 (FeatureNN)   multiple                  61576     
+                                                                 
+ feature_nn_48 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_49 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_50 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_51 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_52 (FeatureNN)   multiple                  49564     
+                                                                 
+ feature_nn_53 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_54 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_55 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_56 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_57 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_58 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_59 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_60 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_61 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_62 (FeatureNN)   multiple                  44812     
+                                                                 
+ feature_nn_63 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_64 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_65 (FeatureNN)   multiple                  11680     
+                                                                 
+ feature_nn_66 (FeatureNN)   multiple                  11680     
+                                                                 
+ feature_nn_67 (FeatureNN)   multiple                  2308      
+                                                                 
+ feature_nn_68 (FeatureNN)   multiple                  11680     
+                                                                 
+ feature_nn_69 (FeatureNN)   multiple                  11680     
+                                                                 
+ feature_nn_70 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_71 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_72 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_73 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_74 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_75 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_76 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_77 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_78 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_79 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_80 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_81 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_82 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_83 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_84 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_85 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_86 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_87 (FeatureNN)   multiple                  2968      
+                                                                 
+ feature_nn_88 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_89 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_90 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_91 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_92 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_93 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_94 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_95 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_96 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_97 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_98 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_99 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_100 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_101 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_102 (FeatureNN)  multiple                  2836      
+                                                                 
+ feature_nn_103 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_104 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_105 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_106 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_107 (FeatureNN)  multiple                  2836      
+                                                                 
+ feature_nn_108 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_109 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_110 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_111 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_112 (FeatureNN)  multiple                  32668     
+                                                                 
+ feature_nn_113 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_114 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_115 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_116 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_117 (FeatureNN)  multiple                  32536     
+                                                                 
+ feature_nn_118 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_119 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_120 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_121 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_122 (FeatureNN)  multiple                  27520     
+                                                                 
+ feature_nn_123 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_124 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_125 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_126 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_127 (FeatureNN)  multiple                  23956     
+                                                                 
+ feature_nn_128 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_129 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_130 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_131 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_132 (FeatureNN)  multiple                  27520     
+                                                                 
+ feature_nn_133 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_134 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_135 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_136 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_137 (FeatureNN)  multiple                  31480     
+                                                                 
+ feature_nn_138 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_139 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_140 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_141 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_142 (FeatureNN)  multiple                  32008     
+                                                                 
+ feature_nn_143 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_144 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_145 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_146 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_147 (FeatureNN)  multiple                  21976     
+                                                                 
+ feature_nn_148 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_149 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_150 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_151 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_152 (FeatureNN)  multiple                  23824     
+                                                                 
+ feature_nn_153 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_154 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_155 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_156 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_157 (FeatureNN)  multiple                  24880     
+                                                                 
+ feature_nn_158 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_159 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_160 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_161 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_162 (FeatureNN)  multiple                  23824     
+                                                                 
+ feature_nn_163 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_164 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_165 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_166 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_167 (FeatureNN)  multiple                  32800     
+                                                                 
+ feature_nn_168 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_169 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_170 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_171 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_172 (FeatureNN)  multiple                  31612     
+                                                                 
+ feature_nn_173 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_174 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_175 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_176 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_177 (FeatureNN)  multiple                  4288      
+                                                                 
+ feature_nn_178 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_179 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_180 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_181 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_182 (FeatureNN)  multiple                  32800     
+                                                                 
+ feature_nn_183 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_184 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_185 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_186 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_187 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_188 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_189 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_190 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_191 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_192 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_193 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_194 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_195 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_196 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_197 (FeatureNN)  multiple                  6004      
+                                                                 
+ feature_nn_198 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_199 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_200 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_201 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_202 (FeatureNN)  multiple                  32932     
+                                                                 
+ feature_nn_203 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_204 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_205 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_206 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_207 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_208 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_209 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_210 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_211 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_212 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_213 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_214 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_215 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_216 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_217 (FeatureNN)  multiple                  8776      
+                                                                 
+ feature_nn_218 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_219 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_220 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_221 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_222 (FeatureNN)  multiple                  17092     
+                                                                 
+ feature_nn_223 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_224 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_225 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_226 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_227 (FeatureNN)  multiple                  6004      
+                                                                 
+ feature_nn_228 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_229 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_230 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_231 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_232 (FeatureNN)  multiple                  25804     
+                                                                 
+ feature_nn_233 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_234 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_235 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_236 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_237 (FeatureNN)  multiple                  34912     
+                                                                 
+ feature_nn_238 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_239 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_240 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_241 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_242 (FeatureNN)  multiple                  34384     
+                                                                 
+ feature_nn_243 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_244 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_245 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_246 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_247 (FeatureNN)  multiple                  35704     
+                                                                 
+ feature_nn_248 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_249 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_250 (FeatureNN)  multiple                  30952     
+                                                                 
+ feature_nn_251 (FeatureNN)  multiple                  31480     
+                                                                 
+ feature_nn_252 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_253 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_254 (FeatureNN)  multiple                  9700      
+                                                                 
+ feature_nn_255 (FeatureNN)  multiple                  9700      
+                                                                 
+ feature_nn_256 (FeatureNN)  multiple                  34252     
+                                                                 
+ feature_nn_257 (FeatureNN)  multiple                  34384     
+                                                                 
+ feature_nn_258 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_259 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_260 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_261 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_262 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_263 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_264 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_265 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_266 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_267 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_268 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_269 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_270 (FeatureNN)  multiple                  22108     
+                                                                 
+ feature_nn_271 (FeatureNN)  multiple                  22108     
+                                                                 
+ feature_nn_272 (FeatureNN)  multiple                  48772     
+                                                                 
+ feature_nn_273 (FeatureNN)  multiple                  49564     
+                                                                 
+ feature_nn_274 (FeatureNN)  multiple                  36496     
+                                                                 
+ feature_nn_275 (FeatureNN)  multiple                  36760     
+                                                                 
+=================================================================
+Total params: 15784537 (60.21 MB)
+Trainable params: 15784537 (60.21 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+Early stopping at epoch 80
+Finished training.
+Model 0: Best Epoch 10.0, Individual AUROC: Train 0.8571301901068761, Validation 0.6540898617511521
+Cross-val fold: 1/5
+Started training with logdir logs/nam_cv/fold_1/split_1
+Model: "nam"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ feature_nn (FeatureNN)      multiple                  68176     
+                                                                 
+ feature_nn_1 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_2 (FeatureNN)    multiple                  22240     
+                                                                 
+ feature_nn_3 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_4 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_5 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_6 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_7 (FeatureNN)    multiple                  7456      
+                                                                 
+ feature_nn_8 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_9 (FeatureNN)    multiple                  68176     
+                                                                 
+ feature_nn_10 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_11 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_12 (FeatureNN)   multiple                  7984      
+                                                                 
+ feature_nn_13 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_14 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_15 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_16 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_17 (FeatureNN)   multiple                  23032     
+                                                                 
+ feature_nn_18 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_19 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_20 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_21 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_22 (FeatureNN)   multiple                  22108     
+                                                                 
+ feature_nn_23 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_24 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_25 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_26 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_27 (FeatureNN)   multiple                  39532     
+                                                                 
+ feature_nn_28 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_29 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_30 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_31 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_32 (FeatureNN)   multiple                  23032     
+                                                                 
+ feature_nn_33 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_34 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_35 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_36 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_37 (FeatureNN)   multiple                  38080     
+                                                                 
+ feature_nn_38 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_39 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_40 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_41 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_42 (FeatureNN)   multiple                  67384     
+                                                                 
+ feature_nn_43 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_44 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_45 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_46 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_47 (FeatureNN)   multiple                  61312     
+                                                                 
+ feature_nn_48 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_49 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_50 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_51 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_52 (FeatureNN)   multiple                  49828     
+                                                                 
+ feature_nn_53 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_54 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_55 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_56 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_57 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_58 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_59 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_60 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_61 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_62 (FeatureNN)   multiple                  43624     
+                                                                 
+ feature_nn_63 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_64 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_65 (FeatureNN)   multiple                  12208     
+                                                                 
+ feature_nn_66 (FeatureNN)   multiple                  12208     
+                                                                 
+ feature_nn_67 (FeatureNN)   multiple                  2308      
+                                                                 
+ feature_nn_68 (FeatureNN)   multiple                  12208     
+                                                                 
+ feature_nn_69 (FeatureNN)   multiple                  12208     
+                                                                 
+ feature_nn_70 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_71 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_72 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_73 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_74 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_75 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_76 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_77 (FeatureNN)   multiple                  2440      
+                                                                 
+ feature_nn_78 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_79 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_80 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_81 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_82 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_83 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_84 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_85 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_86 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_87 (FeatureNN)   multiple                  2968      
+                                                                 
+ feature_nn_88 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_89 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_90 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_91 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_92 (FeatureNN)   multiple                  2572      
+                                                                 
+ feature_nn_93 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_94 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_95 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_96 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_97 (FeatureNN)   multiple                  2704      
+                                                                 
+ feature_nn_98 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_99 (FeatureNN)   multiple                  68176     
+                                                                 
+ feature_nn_100 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_101 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_102 (FeatureNN)  multiple                  2836      
+                                                                 
+ feature_nn_103 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_104 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_105 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_106 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_107 (FeatureNN)  multiple                  2836      
+                                                                 
+ feature_nn_108 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_109 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_110 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_111 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_112 (FeatureNN)  multiple                  35176     
+                                                                 
+ feature_nn_113 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_114 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_115 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_116 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_117 (FeatureNN)  multiple                  33328     
+                                                                 
+ feature_nn_118 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_119 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_120 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_121 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_122 (FeatureNN)  multiple                  28972     
+                                                                 
+ feature_nn_123 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_124 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_125 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_126 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_127 (FeatureNN)  multiple                  23560     
+                                                                 
+ feature_nn_128 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_129 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_130 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_131 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_132 (FeatureNN)  multiple                  27784     
+                                                                 
+ feature_nn_133 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_134 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_135 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_136 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_137 (FeatureNN)  multiple                  32272     
+                                                                 
+ feature_nn_138 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_139 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_140 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_141 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_142 (FeatureNN)  multiple                  33064     
+                                                                 
+ feature_nn_143 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_144 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_145 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_146 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_147 (FeatureNN)  multiple                  23428     
+                                                                 
+ feature_nn_148 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_149 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_150 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_151 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_152 (FeatureNN)  multiple                  23956     
+                                                                 
+ feature_nn_153 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_154 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_155 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_156 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_157 (FeatureNN)  multiple                  26200     
+                                                                 
+ feature_nn_158 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_159 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_160 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_161 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_162 (FeatureNN)  multiple                  23296     
+                                                                 
+ feature_nn_163 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_164 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_165 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_166 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_167 (FeatureNN)  multiple                  34912     
+                                                                 
+ feature_nn_168 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_169 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_170 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_171 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_172 (FeatureNN)  multiple                  32800     
+                                                                 
+ feature_nn_173 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_174 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_175 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_176 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_177 (FeatureNN)  multiple                  4288      
+                                                                 
+ feature_nn_178 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_179 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_180 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_181 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_182 (FeatureNN)  multiple                  33064     
+                                                                 
+ feature_nn_183 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_184 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_185 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_186 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_187 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_188 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_189 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_190 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_191 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_192 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_193 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_194 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_195 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_196 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_197 (FeatureNN)  multiple                  5344      
+                                                                 
+ feature_nn_198 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_199 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_200 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_201 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_202 (FeatureNN)  multiple                  33856     
+                                                                 
+ feature_nn_203 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_204 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_205 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_206 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_207 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_208 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_209 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_210 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_211 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_212 (FeatureNN)  multiple                  2308      
+                                                                 
+ feature_nn_213 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_214 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_215 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_216 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_217 (FeatureNN)  multiple                  9040      
+                                                                 
+ feature_nn_218 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_219 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_220 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_221 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_222 (FeatureNN)  multiple                  16828     
+                                                                 
+ feature_nn_223 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_224 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_225 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_226 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_227 (FeatureNN)  multiple                  6004      
+                                                                 
+ feature_nn_228 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_229 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_230 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_231 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_232 (FeatureNN)  multiple                  26596     
+                                                                 
+ feature_nn_233 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_234 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_235 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_236 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_237 (FeatureNN)  multiple                  36760     
+                                                                 
+ feature_nn_238 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_239 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_240 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_241 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_242 (FeatureNN)  multiple                  35704     
+                                                                 
+ feature_nn_243 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_244 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_245 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_246 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_247 (FeatureNN)  multiple                  37024     
+                                                                 
+ feature_nn_248 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_249 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_250 (FeatureNN)  multiple                  30028     
+                                                                 
+ feature_nn_251 (FeatureNN)  multiple                  30688     
+                                                                 
+ feature_nn_252 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_253 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_254 (FeatureNN)  multiple                  9832      
+                                                                 
+ feature_nn_255 (FeatureNN)  multiple                  9832      
+                                                                 
+ feature_nn_256 (FeatureNN)  multiple                  34780     
+                                                                 
+ feature_nn_257 (FeatureNN)  multiple                  35176     
+                                                                 
+ feature_nn_258 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_259 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_260 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_261 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_262 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_263 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_264 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_265 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_266 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_267 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_268 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_269 (FeatureNN)  multiple                  68176     
+                                                                 
+ feature_nn_270 (FeatureNN)  multiple                  22504     
+                                                                 
+ feature_nn_271 (FeatureNN)  multiple                  22504     
+                                                                 
+ feature_nn_272 (FeatureNN)  multiple                  49168     
+                                                                 
+ feature_nn_273 (FeatureNN)  multiple                  49828     
+                                                                 
+ feature_nn_274 (FeatureNN)  multiple                  35968     
+                                                                 
+ feature_nn_275 (FeatureNN)  multiple                  36496     
+                                                                 
+=================================================================
+Total params: 15796813 (60.26 MB)
+Trainable params: 15796813 (60.26 MB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+Early stopping at epoch 100
+Finished training.
+Model 0: Best Epoch 30.0, Individual AUROC: Train 0.9488917907402441, Validation 0.6531938948558508
