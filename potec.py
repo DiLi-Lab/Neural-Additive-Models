@@ -16,7 +16,7 @@ class Potec(Dataset):
         self.reading_measures_folder = self.repo_root / 'eyetracking_data/reading_measures/'
         self.merged_reading_measures_folder = self.repo_root / 'eyetracking_data/reading_measures_merged/'
 
-    def load_potec_merged_scanpaths(self, label: str) -> (list, pd.DataFrame):
+    def load_potec_merged_scanpaths(self, label_name: str) -> (list, pd.DataFrame):
         # sort to make sure we have the same order
         paths = sorted(list(self.merged_scanpaths_folder.glob('*.tsv')))
         dfs = []
@@ -31,22 +31,18 @@ class Potec(Dataset):
             reader_ids.append(df['reader_id'].iloc[0])
             text_ids.append(df['text_id'].iloc[0])
 
-            if label == 'expert_cls_label':
-                text_domain_numeric = df['text_domain_numeric'].iloc[0]
-                reader_domain_numeric = df['reader_domain_numeric'].iloc[0]
-                expert_status_numeric = df['expert_status_numeric'].iloc[0]
+            if label_name == 'expert_cls_label':
+                label = df['expert_reading_label_numeric'].iloc[0]
 
-                l = 1 if text_domain_numeric == reader_domain_numeric and expert_status_numeric == 1 else 0
+            elif label_name == 'expert_status':
+                label = df['level_of_studies_numeric'].iloc[0]
 
-            elif label == 'expert_status':
-                l = df['expert_status_numeric'].iloc[0]
-
-            labels.append(l)
+            labels.append(label)
 
             dfs.append(df)
 
         # save the sample mapped to unique data identifiers to make sure it is reproducible
         sample_mapping = pd.DataFrame(
-            {'sample_id': range(len(reader_ids)), 'reader_id': reader_ids, 'text_id': text_ids})
+            {'sample_id': range(len(reader_ids)), 'reader_id': reader_ids, 'text_id': text_ids, 'label': labels})
 
         return dfs, np.array(labels), sample_mapping

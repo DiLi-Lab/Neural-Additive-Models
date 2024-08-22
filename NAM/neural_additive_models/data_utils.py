@@ -189,7 +189,7 @@ def load_potec_data(split_criterion_str, data_folder: str = ''):
         data_folder = osp.join(DATA_PATH, 'potec')
 
     potec_dataset = Potec(potec_repo_root=data_folder)
-    potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_scanpaths(label='expert_cls_label')
+    potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_scanpaths(label_name='expert_cls_label')
 
     sample_mapping.to_csv('sample_mapping.csv', index=False)
 
@@ -512,6 +512,7 @@ def get_train_test_fold(
         this column as the group labels.
 
   Returns:
+    X and y splits for training and testing and the group labels if applicable.
     (x_train, y_train): Training folds containing 1 - (1/`num_folds`) fraction
       of entire data.
     (x_test, y_test): Test fold containing 1/`num_folds` fraction of data.
@@ -533,7 +534,7 @@ def get_train_test_fold(
             if fold_num == 1:
                 x_train, x_test = data_x[train_index], data_x[test_index]
                 y_train, y_test = data_y[train_index], data_y[test_index]
-                return (x_train, y_train), (x_test, y_test), (0, 0)
+                return (x_train, y_train), (x_test, y_test), (None, None)
             else:
                 fold_num -= 1
 

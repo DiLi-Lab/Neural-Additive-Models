@@ -255,7 +255,7 @@ def create_iterators(
     """Create tf.Dataset iterators from a tuple of one or more numpy arrays.
 
   Args:
-    datasets: Single or pair of input numpy arrays containing  features.
+    datasets: Single or pair of input numpy arrays containing features.
     batch_size: Batch size for iterating over the datasets.
 
   Returns:
@@ -387,6 +387,8 @@ def build_graph(
         y_true=y_train,
         pred_tensor=y_pred,
         dataset_init_op=train_init_op)
+
+    # validation metric
     test_metric = functools.partial(
         evaluation_metric,
         y_true=y_test,

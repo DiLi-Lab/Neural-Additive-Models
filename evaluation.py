@@ -39,7 +39,7 @@ def evaluate_potec_expert_clf(
         result_folder.mkdir(parents=True)
 
     potec_dataset = Potec(potec_repo_root=potec_folder)
-    potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_scanpaths(label=label_col)
+    potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_scanpaths(label_name=label_col)
 
     sample_mapping.to_csv(result_folder / 'sample_mapping.csv', index=False)
 
@@ -79,8 +79,8 @@ def evaluate_potec_expert_clf(
     outer_fold = 1
     best_score = 0
 
-    outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer)
-    inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner)
+    outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer, random_state=random_state)
+    inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner, random_state=random_state)
 
     for train_index, test_index in outer_kf.split(X, y, groups=split_criterion):
         print(f'\n{"*" * 50}')
@@ -198,8 +198,8 @@ def parse_args() -> dict:
 
 if __name__ == '__main__':
     arguments = parse_args()
-    r = Path(__file__).parent
-    config_path = r / arguments['config']
+    root = Path(__file__).parent
+    config_path = root / arguments['config']
     config = json.load(open(config_path, 'r'))
 
-    evaluate_potec_expert_clf(root_path=r, **config)
+    evaluate_potec_expert_clf(root_path=root, **config)

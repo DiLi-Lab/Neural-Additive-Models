@@ -69,7 +69,7 @@ flags.DEFINE_integer(
     'save_checkpoint_every_n_epochs', 10, 'Indicates the '
                                           'number of epochs after which an checkpoint is saved')
 flags.DEFINE_integer('n_models', 1, 'the number of models to train.')
-flags.DEFINE_integer('num_splits', 1, 'Number of data splits to use')
+flags.DEFINE_integer('num_splits', 5, 'Number of data splits to use')
 flags.DEFINE_integer('fold_num', 1, 'Index of the fold to be used')
 flags.DEFINE_string(
     'activation', 'exu', 'Activation function to used in the '
@@ -81,8 +81,8 @@ flags.DEFINE_boolean('debug', False, 'Debug mode. Log additional things')
 flags.DEFINE_boolean('shallow', False, 'Whether to use shallow or deep NN.')
 flags.DEFINE_boolean('use_dnn', False, 'Deep NN baseline.')
 flags.DEFINE_integer('early_stopping_epochs', 60, 'Early stopping epochs')
-flags.DEFINE_string('group_by', 'reader_id', 'Specified the group label to split by for GroupKFold')
-flags.DEFINE_boolean('all_folds', False, 'Specifies whether to run all folds or just one fold')
+flags.DEFINE_string('group_by', 'reader_id', 'Specifies the group label to split by for GroupKFold')
+flags.DEFINE_boolean('all_folds', True, 'Specifies whether to run all folds or just one fold')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -207,7 +207,7 @@ def _update_metrics_and_checkpoints(sess,
 
 
 def training(x_train, y_train, x_validation,
-             y_validation,
+             y_validation, x_test, y_test,
              logdir):
     """Trains the Neural Additive Model (NAM).
 
@@ -216,6 +216,8 @@ def training(x_train, y_train, x_validation,
     y_train: Training labels.
     x_validation: Validation inputs.
     y_validation: Validation labels.
+    x_test: Test inputs.
+    y_test: Test labels.
     logdir: dir to save the checkpoints.
 
   Returns:
@@ -289,7 +291,8 @@ def training(x_train, y_train, x_validation,
                          best_train_metric[n]) = _update_metrics_and_checkpoints(
                             sess, epoch, metric_scores[n], curr_best_epoch[n],
                             best_validation_metric[n], best_train_metric[n], model_dirs[n],
-                            best_checkpoint_dirs[n], metric_name)
+                            best_checkpoint_dirs[n], metric_name
+                        )
                         if curr_best_epoch[n] + FLAGS.early_stopping_epochs < epoch:
                             tf.logging.info('Early stopping at epoch {}'.format(epoch))
                             print('Early stopping at epoch {}'.format(epoch))
@@ -298,6 +301,11 @@ def training(x_train, y_train, x_validation,
                                 graph_tensors_and_ops, early_stopping)
                     # Reset running variable counters
                     sess.run(graph_tensors_and_ops[n]['running_vars_initializer'])
+            for n in range(FLAGS.n_models):
+                model = graph_tensors_and_ops[n]['nn_model']
+                test_predictions = model.call(x_test, training=False)
+                print(test_predictions)
+                # TODO: finish to calculate the metrics on the test set (acc and auc)
 
     tf.logging.info('Finished training.')
     print('Finished training.')
@@ -326,6 +334,7 @@ def create_test_train_fold(
         num_folds=_N_FOLDS,
         stratified=not FLAGS.regression,
         group_split=split_criterion)
+
     data_gen = data_utils.split_training_dataset(
         x_train_all,
         y_train_all,
@@ -339,21 +348,28 @@ def create_test_train_fold(
 
 
 def single_split_training(data_gen,
-                          logdir):
-    """Uses a specific (training, validation) split for NAM training."""
+                          test_data,
+                          logdir,
+                          fold):
+    """
+    Uses a specific (training, validation) split for NAM training.
+        data_gen: Iterator that generates (x_train, y_train), (x_validation, y_validation)
+        test_data: (x_test, y_test)
+        logdir: Directory to save the model checkpoints.
+    """
     for _ in range(FLAGS.data_split):
         (x_train, y_train), (x_validation, y_validation) = next(data_gen)
     curr_logdir = os.path.join(logdir, 'fold_{}',
-                               'split_{}').format(FLAGS.fold_num,
+                               'split_{}').format(fold,
                                                   FLAGS.data_split)
-    training(x_train, y_train, x_validation, y_validation, curr_logdir)
+    best_train_mean, best_val_mean = training(x_train, y_train, x_validation, y_validation, *test_data, curr_logdir)
 
 
 def main(argv):
     del argv  # Unused
     tf.logging.set_verbosity(tf.logging.INFO)
 
-    data_x, data_y, _, split_criterion = data_utils.load_dataset(FLAGS.dataset_name, FLAGS.group_by,
+    data_x, data_y, column_names, split_criterion = data_utils.load_dataset(FLAGS.dataset_name, FLAGS.group_by,
                                                                  FLAGS.dataset_folder)
 
     if FLAGS.all_folds:
@@ -362,16 +378,19 @@ def main(argv):
         for fold in range(1, _N_FOLDS + 1):
             tf.logging.info('Cross-val fold: %d/%d', fold, _N_FOLDS)
             print(f'Cross-val fold: {fold}/{_N_FOLDS}')
-            data_gen, _ = create_test_train_fold(fold, data_x, data_y, split_criterion)
-            single_split_training(data_gen, FLAGS.logdir)
+            data_gen, test_data = create_test_train_fold(fold, data_x, data_y, split_criterion)
+            # TODO: for split in splits repeat the training single split and determine best hparams
+            #  (i.e. for each set of hparams, train on all splits and average the results), on each fold determine
+            #  the best set of hparams and then the the testing with these hparams
+            single_split_training(data_gen, test_data, FLAGS.logdir, fold)
 
     else:
         tf.logging.info('Dataset: %s, Size: %d', FLAGS.dataset_name, data_x.shape[0])
         tf.logging.info('Cross-val fold: %d/%d', FLAGS.fold_num, _N_FOLDS)
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
         print(f'Cross-val fold: {FLAGS.fold_num}/{_N_FOLDS}')
-        data_gen, _ = create_test_train_fold(FLAGS.fold_num, data_x, data_y, split_criterion)
-        single_split_training(data_gen, FLAGS.logdir)
+        data_gen, test_data = create_test_train_fold(FLAGS.fold_num, data_x, data_y, split_criterion)
+        single_split_training(data_gen, test_data, FLAGS.logdir, FLAGS.fold_num)
 
 
 if __name__ == '__main__':
