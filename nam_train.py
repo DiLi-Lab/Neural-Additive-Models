@@ -29,6 +29,7 @@ import tensorflow.compat.v1 as tf
 
 from NAM.neural_additive_models import data_utils
 from NAM.neural_additive_models import graph_builder
+from NAM.neural_additive_models.graph_builder import calculate_metric
 
 gfile = tf.io.gfile
 DatasetType = data_utils.DatasetType
@@ -83,6 +84,7 @@ flags.DEFINE_boolean('use_dnn', False, 'Deep NN baseline.')
 flags.DEFINE_integer('early_stopping_epochs', 60, 'Early stopping epochs')
 flags.DEFINE_string('group_by', 'reader_id', 'Specifies the group label to split by for GroupKFold')
 flags.DEFINE_boolean('all_folds', True, 'Specifies whether to run all folds or just one fold')
+flags.DEFINE_boolean('hp_tuning', True, 'Specifies whether to run hyperparameter tuning or not')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -255,6 +257,13 @@ def training(x_train, y_train, x_validation,
         increment_global_step = tf.assign(global_step, global_step + 1)
         saver_hooks, model_dirs, best_checkpoint_dirs = _create_graph_saver(
             graph_tensors_and_ops, logdir, num_steps_per_epoch)
+
+        # Define test set inference in the graph
+        test_predictions = []
+        for n in range(FLAGS.n_models):
+            model = graph_tensors_and_ops[n]['nn_model']
+            test_predictions.append(model(x_test, training=False))  # Create the test prediction ops
+
         if FLAGS.debug:
             summary_writer = tf.summary.FileWriter(os.path.join(logdir, 'tb_log'))
 
@@ -301,22 +310,25 @@ def training(x_train, y_train, x_validation,
                                 graph_tensors_and_ops, early_stopping)
                     # Reset running variable counters
                     sess.run(graph_tensors_and_ops[n]['running_vars_initializer'])
+
+            test_metrics = []
+            # Inference on the test set
             for n in range(FLAGS.n_models):
-                model = graph_tensors_and_ops[n]['nn_model']
-                test_predictions = model.call(x_test, training=False)
-                print(test_predictions)
-                # TODO: finish to calculate the metrics on the test set (acc and auc)
+                preds = sess.run(test_predictions[n])
+                metric = calculate_metric(y_test, preds, FLAGS.regression)
+                test_metrics.append(metric)
 
     tf.logging.info('Finished training.')
     print('Finished training.')
     for n in range(FLAGS.n_models):
         tf.logging.info(
             f'Model {n}: Best Epoch {curr_best_epoch[n]}, Individual {metric_name}: Train {best_train_metric[n]}, '
-            f'Validation {best_validation_metric[n]}')
+            f'Validation {best_validation_metric[n]}, Test {test_metrics[n]}')
         print(f'Model {n}: Best Epoch {curr_best_epoch[n]}, Individual {metric_name}: Train {best_train_metric[n]}, '
-              f'Validation {best_validation_metric[n]}')
+              f'Validation {best_validation_metric[n]}, Test {test_metrics[n]}')
 
-    return np.mean(best_train_metric), np.mean(best_validation_metric)
+    # TODO: return all the infos on metrics, probs, preds, etc. to store for later
+    return np.mean(best_train_metric), np.mean(best_validation_metric), test_metrics
 
 
 def create_test_train_fold(
@@ -362,7 +374,11 @@ def single_split_training(data_gen,
     curr_logdir = os.path.join(logdir, 'fold_{}',
                                'split_{}').format(fold,
                                                   FLAGS.data_split)
-    best_train_mean, best_val_mean = training(x_train, y_train, x_validation, y_validation, *test_data, curr_logdir)
+    if FLAGS.hp_tuning:
+        # Perform hyperparameter tuning
+        return training(x_train, y_train, x_validation, y_validation, *test_data, curr_logdir)
+    else:
+        return training(x_train, y_train, x_validation, y_validation, *test_data, curr_logdir)
 
 
 def main(argv):
@@ -371,18 +387,19 @@ def main(argv):
 
     data_x, data_y, column_names, split_criterion = data_utils.load_dataset(FLAGS.dataset_name, FLAGS.group_by,
                                                                  FLAGS.dataset_folder)
+    test_scores_all_models = []
 
     if FLAGS.all_folds:
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
         tf.logging.info('Dataset: %s, Size: %d', FLAGS.dataset_name, data_x.shape[0])
+
         for fold in range(1, _N_FOLDS + 1):
             tf.logging.info('Cross-val fold: %d/%d', fold, _N_FOLDS)
             print(f'Cross-val fold: {fold}/{_N_FOLDS}')
             data_gen, test_data = create_test_train_fold(fold, data_x, data_y, split_criterion)
-            # TODO: for split in splits repeat the training single split and determine best hparams
-            #  (i.e. for each set of hparams, train on all splits and average the results), on each fold determine
-            #  the best set of hparams and then the the testing with these hparams
-            single_split_training(data_gen, test_data, FLAGS.logdir, fold)
+            _, _, test_scores = single_split_training(data_gen, test_data, FLAGS.logdir, fold)
+
+            test_scores_all_models.append(test_scores)
 
     else:
         tf.logging.info('Dataset: %s, Size: %d', FLAGS.dataset_name, data_x.shape[0])
@@ -390,7 +407,9 @@ def main(argv):
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
         print(f'Cross-val fold: {FLAGS.fold_num}/{_N_FOLDS}')
         data_gen, test_data = create_test_train_fold(FLAGS.fold_num, data_x, data_y, split_criterion)
-        single_split_training(data_gen, test_data, FLAGS.logdir, FLAGS.fold_num)
+        _, _, test_scores_all_models = single_split_training(data_gen, test_data, FLAGS.logdir, FLAGS.fold_num)
+
+    print(f'Test scores for all models and folds (if applicable): {test_scores_all_models}')
 
 
 if __name__ == '__main__':

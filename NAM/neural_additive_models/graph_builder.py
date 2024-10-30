@@ -353,7 +353,7 @@ def build_graph(
     optimizer = tf.train.AdamOptimizer(learning_rate)
 
     predictions = nn_model(x_batch, training=False)
-    tf.logging.info(nn_model.summary())
+    # tf.logging.info(nn_model.summary())
     train_vars = nn_model.trainable_variables
     if regression:
         loss_fn, y_pred = penalized_mse_loss, predictions
