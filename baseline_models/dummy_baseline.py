@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.dummy import DummyClassifier
 from sklearn.model_selection import GridSearchCV
 
-from model import Model
+from baseline_models.baseline_model import Model
 
 
 class DummyBaseline(Model):

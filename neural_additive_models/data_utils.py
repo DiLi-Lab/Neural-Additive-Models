@@ -18,7 +18,7 @@
 import gzip
 import os.path as osp
 import tarfile
-from typing import Tuple, Dict, Union, Iterator, List
+from typing import Tuple, Union, List
 
 import numpy as np
 import pandas as pd
@@ -35,8 +35,8 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import OneHotEncoder
 import tensorflow.compat.v1 as tf
 
-from extract_features import get_combined_features
-from potec import Potec
+from data.extract_features import get_combined_features
+from data.potec import Potec
 
 gfile = tf.gfile
 

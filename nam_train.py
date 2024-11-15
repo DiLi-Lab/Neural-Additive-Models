@@ -18,23 +18,28 @@
 r"""Training script for Neural Additive Models.
 
 """
-
+import datetime
 import operator
 import os
-from typing import Tuple, Iterator, List, Dict
+from collections import defaultdict, OrderedDict
+from itertools import product
+from typing import Tuple, List, Dict, Any
 from absl import app
 from absl import flags
 import numpy as np
 import tensorflow.compat.v1 as tf
+from sklearn import metrics
+from tqdm import tqdm
 
-from NAM.neural_additive_models import data_utils
-from NAM.neural_additive_models import graph_builder
-from NAM.neural_additive_models.graph_builder import calculate_metric
+from neural_additive_models import data_utils, graph_builder
+from neural_additive_models.graph_builder import calculate_metric, sigmoid
 
 gfile = tf.io.gfile
 DatasetType = data_utils.DatasetType
 
 FLAGS = flags.FLAGS
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 flags.DEFINE_integer('training_epochs', 100,
                      'The number of epochs to run training for.')
@@ -42,7 +47,8 @@ flags.DEFINE_float('learning_rate', 1e-2, 'Hyperparameter: learning rate.')
 flags.DEFINE_float('output_regularization', 0.0, 'Hyperparameter: feature reg')
 flags.DEFINE_float('l2_regularization', 0.0, 'Hyperparameter: l2 weight decay')
 flags.DEFINE_integer('batch_size', 28, 'Hyperparameter: batch size.')
-flags.DEFINE_string('logdir', 'logs', 'Path to dir where to store summaries.')
+flags.DEFINE_string('logdir', f'{THIS_DIR}/results_nam/logs_{datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")}',
+                    'Path to dir where to store summaries.')
 flags.DEFINE_string('dataset_name', 'PoTeC',
                     'Name of the dataset to load for training.')
 flags.DEFINE_string('dataset_folder', '/Users/debor/repos/PoTeC-data',
@@ -50,8 +56,8 @@ flags.DEFINE_string('dataset_folder', '/Users/debor/repos/PoTeC-data',
 flags.DEFINE_float('decay_rate', 0.995, 'Hyperparameter: Optimizer decay rate')
 flags.DEFINE_float('dropout', 0.5, 'Hyperparameter: Dropout rate')
 flags.DEFINE_integer(
-    'data_split', 1, 'Dataset split index to use. Possible '
-                     'values are 1 to `FLAGS.num_splits`.')
+    'data_split', 2, 'Dataset split index to use for splitting the training set into val and train. '
+                     'Possible values are 1 to `FLAGS.num_splits`.')
 flags.DEFINE_integer('tf_seed', 1, 'seed for tf.')
 flags.DEFINE_float('feature_dropout', 0.0,
                    'Hyperparameter: Prob. with which features are dropped')
@@ -84,7 +90,7 @@ flags.DEFINE_boolean('use_dnn', False, 'Deep NN baseline.')
 flags.DEFINE_integer('early_stopping_epochs', 60, 'Early stopping epochs')
 flags.DEFINE_string('group_by', 'reader_id', 'Specifies the group label to split by for GroupKFold')
 flags.DEFINE_boolean('all_folds', True, 'Specifies whether to run all folds or just one fold')
-flags.DEFINE_boolean('hp_tuning', True, 'Specifies whether to run hyperparameter tuning or not')
+flags.DEFINE_boolean('hp_tuning', False, 'Specifies whether to run hyperparameter tuning or not')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -128,7 +134,7 @@ def _update_latest_checkpoint(checkpoint_dir,
 
 def _create_computation_graph(
         x_train, y_train, x_validation,
-        y_validation, batch_size
+        y_validation, hp_grid: Dict[str, Any]
 ):
     """Build the computation graph."""
     graph_tensors_and_ops = []
@@ -139,21 +145,12 @@ def _create_computation_graph(
             y_train=y_train,
             x_test=x_validation,
             y_test=y_validation,
-            activation=FLAGS.activation,
-            learning_rate=FLAGS.learning_rate,
-            batch_size=batch_size,
-            shallow=FLAGS.shallow,
-            output_regularization=FLAGS.output_regularization,
-            l2_regularization=FLAGS.l2_regularization,
-            dropout=FLAGS.dropout,
-            num_basis_functions=FLAGS.num_basis_functions,
-            units_multiplier=FLAGS.units_multiplier,
-            decay_rate=FLAGS.decay_rate,
-            feature_dropout=FLAGS.feature_dropout,
             regression=FLAGS.regression,
             use_dnn=FLAGS.use_dnn,
             trainable=True,
-            name_scope=f'model_{n}')
+            name_scope=f'model_{n}',
+            **hp_grid,
+        )
         graph_tensors_and_ops.append(graph_tensors_and_ops_n)
         metric_scores.append(metric_scores_n)
     return graph_tensors_and_ops, metric_scores
@@ -198,6 +195,7 @@ def _update_metrics_and_checkpoints(sess,
     if FLAGS.debug:
         tf.logging.info('Epoch %d %s Val %.4f', epoch, metric_name,
                         validation_metric)
+    # Update the best validation metric and the corresponding train metric
     if compare_metric(validation_metric, best_validation_metric):
         curr_best_epoch = epoch
         best_validation_metric = validation_metric
@@ -210,7 +208,7 @@ def _update_metrics_and_checkpoints(sess,
 
 def training(x_train, y_train, x_validation,
              y_validation, x_test, y_test,
-             logdir):
+             logdir, hyperparameters) -> Tuple[float, float, List[float], dict]:
     """Trains the Neural Additive Model (NAM).
 
   Args:
@@ -221,9 +219,11 @@ def training(x_train, y_train, x_validation,
     x_test: Test inputs.
     y_test: Test labels.
     logdir: dir to save the checkpoints.
+    hyperparameters: Hyperparameters for the NAM model.
 
   Returns:
-    Best train and validation evaluation metric obtained during NAM training.
+    Best train and validation evaluation metric obtained during NAM training averaged across all models.
+    And all the test metrics for all the models.
   """
     tf.logging.info('Started training with logdir %s', logdir)
     print(f'Started training with logdir {logdir}')
@@ -246,10 +246,12 @@ def training(x_train, y_train, x_validation,
     metric_name = 'RMSE' if FLAGS.regression else 'AUROC'
     tf.reset_default_graph()
     with tf.Graph().as_default():
-        tf.compat.v1.set_random_seed(FLAGS.tf_seed)
+        tf.compat.v1.set_random_seed(hyperparameters['tf_seed'])
         # Setup your training.
+        hp_copy = hyperparameters.copy()
+        hp_copy.pop('tf_seed')
         graph_tensors_and_ops, metric_scores = _create_computation_graph(
-            x_train, y_train, x_validation, y_validation, batch_size)
+            x_train, y_train, x_validation, y_validation, hp_copy)
 
         train_ops, lr_decay_ops = _get_train_and_lr_decay_ops(
             graph_tensors_and_ops, early_stopping)
@@ -312,14 +314,33 @@ def training(x_train, y_train, x_validation,
                     sess.run(graph_tensors_and_ops[n]['running_vars_initializer'])
 
             test_metrics = []
-            # Inference on the test set
-            for n in range(FLAGS.n_models):
-                preds = sess.run(test_predictions[n])
-                metric = calculate_metric(y_test, preds, FLAGS.regression)
-                test_metrics.append(metric)
+            # Inference on the test set unless we're tuning the hyperparameters
+            metric_dict = {}
+            if not FLAGS.hp_tuning:
+                for n in range(FLAGS.n_models):
+                    preds = sess.run(test_predictions[n])
 
-    tf.logging.info('Finished training.')
-    print('Finished training.')
+                    if not FLAGS.regression:
+                        probas = sigmoid(preds)
+                        tpr, fpr, _ = metrics.roc_curve(np.array(y_test, dtype=int), probas, pos_label=1)
+
+                    metric = calculate_metric(y_test, preds, FLAGS.regression)
+                    test_metrics.append(metric)
+
+                    metric_dict[f'model_{n}'] = {
+                        'preds': preds,
+                        'tpr': tpr,
+                        'fpr': fpr,
+                        f'{"RSME" if FLAGS.regression else "AUROC"}': metric
+                    }
+
+                    if not FLAGS.regression:
+                        metric_dict[f'model_{n}']['probas'] = probas
+            else:
+                test_metrics = [np.NaN] * FLAGS.n_models
+
+    tf.logging.info('Finished training on one fold.')
+    print('Finished training on one fold.')
     for n in range(FLAGS.n_models):
         tf.logging.info(
             f'Model {n}: Best Epoch {curr_best_epoch[n]}, Individual {metric_name}: Train {best_train_metric[n]}, '
@@ -327,8 +348,9 @@ def training(x_train, y_train, x_validation,
         print(f'Model {n}: Best Epoch {curr_best_epoch[n]}, Individual {metric_name}: Train {best_train_metric[n]}, '
               f'Validation {best_validation_metric[n]}, Test {test_metrics[n]}')
 
-    # TODO: return all the infos on metrics, probs, preds, etc. to store for later
-    return np.mean(best_train_metric), np.mean(best_validation_metric), test_metrics
+    # returns the mean over all models for train and val score for the best checkpoint and
+    # the test scores for all models individually
+    return np.mean(best_train_metric), np.mean(best_validation_metric), test_metrics, metric_dict
 
 
 def create_test_train_fold(
@@ -368,17 +390,116 @@ def single_split_training(data_gen,
         data_gen: Iterator that generates (x_train, y_train), (x_validation, y_validation)
         test_data: (x_test, y_test)
         logdir: Directory to save the model checkpoints.
+        fold: Fold number.
     """
     for _ in range(FLAGS.data_split):
         (x_train, y_train), (x_validation, y_validation) = next(data_gen)
     curr_logdir = os.path.join(logdir, 'fold_{}',
                                'split_{}').format(fold,
                                                   FLAGS.data_split)
-    if FLAGS.hp_tuning:
-        # Perform hyperparameter tuning
-        return training(x_train, y_train, x_validation, y_validation, *test_data, curr_logdir)
+
+    if FLAGS.hp_tuning and fold == 1:
+        print(f'Hyperparameter tuning on fold {fold}')
+        # Perform hyperparameter tuning on the first fold
+        # This is done only once for the first fold, the hps are defined in the flags on top of the file
+        # TODO: move this to config file or somewhere else
+        hyper_parameters = {
+            'learning_rate': [1e-2, 1e-3],
+            'output_regularization': [0.0, 0.1],
+            'l2_regularization': [0.0, 0.1],
+            'batch_size': [28, 32],
+            'decay_rate': [0.99, 0.995],
+            'dropout': [0.5, 0.7],
+            'feature_dropout': [0.0, 0.1],
+            'num_basis_functions': [1000, 2000],
+            'units_multiplier': [2, 4],
+            'shallow': [True, False],
+            'tf_seed': [1, 2],
+        }
+
+        # create file where to log the results_baselines for the tuning
+        hp_file_name = f'{curr_logdir}/hp_tuning_results.txt'
+        os.makedirs(os.path.dirname(hp_file_name), exist_ok=True)
+        with open(hp_file_name, 'w', encoding='utf8') as f:
+            f.write('Hyperparameter tuning results\n')
+            f.write(f'Hyperparameters tested: {hyper_parameters}\n')
+            f.write(f'Metric: {"AUROC" if not FLAGS.regression else "RMSE"}\n')
+
+        # Generate all combinations of hyperparameters as dictionaries
+        hp_combinations = [dict(zip(hyper_parameters.keys(), values)) for values in product(*hyper_parameters.values())]
+
+        best_val_score = np.inf if FLAGS.regression else 0
+        best_train_score = None
+        best_hps = None
+
+        print(f'Testing {len(hp_combinations)} hyperparameter combinations')
+
+        for hp_grid in tqdm(hp_combinations):
+
+            train_score, val_score, test_scores, metric_dict = training(x_train, y_train, x_validation, y_validation,
+                                                                        *test_data, curr_logdir, hp_grid)
+
+            if FLAGS.regression and val_score < best_val_score:
+                best_val_score = val_score
+                best_train_score = train_score
+                best_hps = hp_grid
+                with open(hp_file_name, 'a', encoding='utf8') as f:
+                    f.write(f'Current best hyperparameters: {best_hps}\n')
+
+            elif not FLAGS.regression and val_score > best_val_score:
+                best_val_score = val_score
+                best_train_score = train_score
+                best_hps = hp_grid
+                with open(hp_file_name, 'a', encoding='utf8') as f:
+                    f.write(f'Current best hyperparameters: {best_hps}\n')
+            else:
+                with open(hp_file_name, 'a', encoding='utf8') as f:
+                    f.write(f'Tested hyperparameters: {hp_grid}\n')
+
+            with open(hp_file_name, 'a', encoding='utf8') as f:
+                f.write(f'Train score: {train_score}\n')
+                f.write(f'Validation score: {val_score}\n')
+
+        with open(hp_file_name, 'a', encoding='utf8') as f:
+            f.write(f'Final best hyperparameters: {best_hps}\n')
+
+        # repeat training one more time for this fold with the best hyperparameters
+        FLAGS.hp_tuning = False
+        _, _, best_test_scores, metric_dict = training(x_train, y_train, x_validation, y_validation, *test_data,
+                                                       curr_logdir, best_hps)
+
+        with open(hp_file_name, 'a', encoding='utf8') as f:
+            f.write(f'Train score: {best_train_score}\n')
+            f.write(f'Validation score: {best_val_score}\n')
+            f.write(f'Test scores for best hyperparameters: {best_test_scores}')
+
+        print(f'Finished hyperparameter tuning on fold {fold}')
+        print(f'Best hyperparameters: {best_hps}')
+
+        return best_hps, best_train_score, best_val_score, best_test_scores, metric_dict
+
     else:
-        return training(x_train, y_train, x_validation, y_validation, *test_data, curr_logdir)
+        # TODO: make this nicer
+        hps = {
+            'learning_rate': FLAGS.learning_rate,
+            'output_regularization': FLAGS.output_regularization,
+            'l2_regularization': FLAGS.l2_regularization,
+            'batch_size': FLAGS.batch_size,
+            'decay_rate': FLAGS.decay_rate,
+            'dropout': FLAGS.dropout,
+            'feature_dropout': FLAGS.feature_dropout,
+            'num_basis_functions': FLAGS.num_basis_functions,
+            'units_multiplier': FLAGS.units_multiplier,
+            'shallow': FLAGS.shallow,
+            'tf_seed': FLAGS.tf_seed,
+        }
+        hps = {'learning_rate': 0.01, 'output_regularization': 0.0, 'l2_regularization': 0.0, 'batch_size': 28,
+               'decay_rate': 0.995, 'dropout': 0.5, 'feature_dropout': 0.1, 'num_basis_functions': 1000,
+               'units_multiplier': 4, 'shallow': True, 'tf_seed': 2}
+
+        train_score, val_score, test_scores, metric_dict = training(x_train, y_train, x_validation, y_validation,
+                                                                    *test_data, curr_logdir, hps)
+        return hps, train_score, val_score, test_scores, metric_dict
 
 
 def main(argv):
@@ -386,8 +507,9 @@ def main(argv):
     tf.logging.set_verbosity(tf.logging.INFO)
 
     data_x, data_y, column_names, split_criterion = data_utils.load_dataset(FLAGS.dataset_name, FLAGS.group_by,
-                                                                 FLAGS.dataset_folder)
+                                                                            FLAGS.dataset_folder)
     test_scores_all_models = []
+    all_metrics = OrderedDict()
 
     if FLAGS.all_folds:
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
@@ -397,9 +519,15 @@ def main(argv):
             tf.logging.info('Cross-val fold: %d/%d', fold, _N_FOLDS)
             print(f'Cross-val fold: {fold}/{_N_FOLDS}')
             data_gen, test_data = create_test_train_fold(fold, data_x, data_y, split_criterion)
-            _, _, test_scores = single_split_training(data_gen, test_data, FLAGS.logdir, fold)
+            _, _, _, test_scores, metric_dict = single_split_training(data_gen, test_data, FLAGS.logdir, fold)
 
             test_scores_all_models.append(test_scores)
+
+            all_metrics[f'fold_{fold}'] = metric_dict
+
+            # dump it after each fold and overwrite the file
+            with open(f'{FLAGS.logdir}/metrics_dict.txt', 'w', encoding='utf8') as f:
+                f.write(str(all_metrics))
 
     else:
         tf.logging.info('Dataset: %s, Size: %d', FLAGS.dataset_name, data_x.shape[0])
@@ -407,9 +535,15 @@ def main(argv):
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
         print(f'Cross-val fold: {FLAGS.fold_num}/{_N_FOLDS}')
         data_gen, test_data = create_test_train_fold(FLAGS.fold_num, data_x, data_y, split_criterion)
-        _, _, test_scores_all_models = single_split_training(data_gen, test_data, FLAGS.logdir, FLAGS.fold_num)
+        _, _, _, test_scores_all_models, metric_dict = single_split_training(data_gen, test_data, FLAGS.logdir, FLAGS.fold_num)
 
-    print(f'Test scores for all models and folds (if applicable): {test_scores_all_models}')
+        all_metrics[f'fold_{FLAGS.fold_num}'] = metric_dict
+
+    print(f'Test scores for all models for each fold: {test_scores_all_models}')
+    print(f'Mean test scores for all models: {np.mean(test_scores_all_models, axis=0)}')
+
+    with open(f'{FLAGS.logdir}/metrics_dict.txt', 'w', encoding='utf8') as f:
+        f.write(str(all_metrics))
 
 
 if __name__ == '__main__':

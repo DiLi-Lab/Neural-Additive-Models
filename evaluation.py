@@ -14,10 +14,10 @@ from sklearn.preprocessing import StandardScaler
 
 from baseline_models.gradient_boosting_cls import GradientBoostingCls
 from baseline_models.svc import SVCls
-from extract_features import get_combined_features
+from data.extract_features import get_combined_features
 from baseline_models.random_forest import RandomForest
 from baseline_models.dummy_baseline import DummyBaseline
-from potec import Potec
+from data.potec import Potec
 
 
 def evaluate_potec_expert_clf(
@@ -33,7 +33,7 @@ def evaluate_potec_expert_clf(
     random.seed(random_state)
     np.random.seed(random_state)
     today = datetime.now().strftime('%Y-%m-%d-%H:%M')
-    result_folder = root_path / 'results' / f'evaluation_split-{split_criterion_str}_{today}'
+    result_folder = root_path / 'results_baselines' / f'evaluation_split-{split_criterion_str}_{today}'
 
     if not result_folder.exists():
         result_folder.mkdir(parents=True)
@@ -79,8 +79,8 @@ def evaluate_potec_expert_clf(
     outer_fold = 1
     best_score = 0
 
-    outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer, random_state=random_state)
-    inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner, random_state=random_state)
+    outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer, random_state=random_state, shuffle=True)
+    inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner, random_state=random_state, shuffle=True)
 
     for train_index, test_index in outer_kf.split(X, y, groups=split_criterion):
         print(f'\n{"*" * 50}')

@@ -129,4 +129,6 @@ dmypy.json
 
 .idea/
 
-results/
+results_baselines/
+logs/
+/results_nam/

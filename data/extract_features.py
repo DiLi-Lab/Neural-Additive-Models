@@ -1100,19 +1100,19 @@ def get_combined_features(df_list):
         feature_aggregations=['mean', 'std'],
     )
 
-    # lexical_features, lexical_feature_names = get_features_df_list_lexical(
-    #    df_list,
-    # )
+    lexical_features, lexical_feature_names = get_features_df_list_lexical(
+         df_list,
+      )
 
     # data_arr = np.hstack(
     #    [data_arr_numeric, data_arr_cat, lexical_features],
     # )
 
-    # data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2, lexical_features])
-    data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2])
+    data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2, lexical_features])
+    #data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2])
 
-    # feature_names = list(feature_names_numeric) + list(feature_names_numeric_2 + list(lexical_feature_names))
-    feature_names = list(feature_names_numeric) + list(feature_names_numeric_2)
+    feature_names = list(feature_names_numeric) + list(feature_names_numeric_2 + list(lexical_feature_names))
+    #feature_names = list(feature_names_numeric) + list(feature_names_numeric_2)
     data_arr = np.nan_to_num(data_arr, nan=-1)
     data_arr = np.nan_to_num(data_arr.astype(np.float32))
 

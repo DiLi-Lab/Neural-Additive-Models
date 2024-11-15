@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from datetime import datetime
 from pathlib import Path
 
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
 
-from model import Model
+from baseline_models.baseline_model import Model
 
 
 class GradientBoostingCls(Model):

@@ -17,13 +17,13 @@
 """Build a deep GAM model graph."""
 
 import functools
-from typing import Union, List, Optional, Tuple, Callable, Dict
+from typing import Union, Callable, Dict
 import warnings
 import numpy as np
 from sklearn import metrics as sk_metrics
 import tensorflow.compat.v1 as tf
 
-import NAM.neural_additive_models.models as models
+import neural_additive_models.models as models
 
 # To suppress warnings in the sigmoid function
 warnings.filterwarnings('ignore')
