@@ -176,7 +176,7 @@ def load_telco_churn_data():
     }
 
 
-def load_potec_data(split_criterion_str, data_folder: str = ''):
+def load_potec_data(split_criterion_str, data_folder: str = '', log_dir: str = ''):
     """Loads the potec dataset and prepares the features.
 
   Predict whether a reader is an expert in the text domain or not based on their scanpaths.
@@ -191,7 +191,7 @@ def load_potec_data(split_criterion_str, data_folder: str = ''):
     potec_dataset = Potec(potec_repo_root=data_folder)
     potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_scanpaths(label_name='expert_cls_label')
 
-    sample_mapping.to_csv('sample_mapping.csv', index=False)
+    sample_mapping.to_csv(f'{log_dir}/sample_mapping.csv', index=False)
 
     X, feature_names = get_combined_features(potec_sp_dfs)
 
@@ -424,7 +424,9 @@ def transform_data(df):
 def load_dataset(
         dataset_name,
         split_criterion_str: str = '',
-        data_folder: str = '') -> Tuple[np.ndarray, np.ndarray, List[str], Union[int, List[str]]]:
+        data_folder: str = '',
+        log_directory: str = '',
+) -> Tuple[np.ndarray, np.ndarray, List[str], Union[int, List[str]]]:
     """Loads the dataset according to the `dataset_name` passed.
 
   Args:
@@ -463,10 +465,14 @@ def load_dataset(
     elif dataset_name == 'Housing':
         dataset = load_california_housing_data()
     elif dataset_name == 'PoTeC':
-        dataset = load_potec_data(split_criterion_str, data_folder)
+        dataset = load_potec_data(split_criterion_str, data_folder, log_directory)
     else:
         raise ValueError('{} not found!'.format(dataset_name))
 
+    return reformat_data(dataset, dataset_name)
+
+
+def reformat_data(dataset, name):
     data_x, data_y = dataset['X'].copy(), dataset['y'].copy()
     problem_type = dataset['problem']
     data_x, column_names = transform_data(data_x)
@@ -477,7 +483,7 @@ def load_dataset(
         data_y = np.argmax(data_y, axis=-1)
     data_y = data_y.astype('float32')
 
-    if dataset_name == 'PoTeC':
+    if name == 'PoTeC':
         split_criterion = dataset['split_criterion']
         return data_x, data_y, column_names, split_criterion
 

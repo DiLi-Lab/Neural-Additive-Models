@@ -192,6 +192,12 @@ def parse_args() -> dict:
         help='Path to config file',
         default='evaluation_configs/config_baseline_hp_tuning_2_labels_new-reader-split.json'
     )
+
+    parser.add_argument(
+        '--data-folder',
+        type=str,
+        help='Path to the potec folder',
+    )
     args = parser.parse_args()
     return vars(args)
 
@@ -201,5 +207,8 @@ if __name__ == '__main__':
     root = Path(__file__).parent
     config_path = root / arguments['config']
     config = json.load(open(config_path, 'r'))
+
+    if arguments['data_folder'] is not None:
+        config['potec_folder'] = arguments['data_folder']
 
     evaluate_potec_expert_clf(root_path=root, **config)

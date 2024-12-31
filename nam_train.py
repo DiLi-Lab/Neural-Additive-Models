@@ -22,6 +22,7 @@ import datetime
 import operator
 import os
 from collections import defaultdict, OrderedDict
+from contextlib import redirect_stdout
 from itertools import product
 from typing import Tuple, List, Dict, Any
 from absl import app
@@ -44,27 +45,27 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 flags.DEFINE_integer('training_epochs', 100,
                      'The number of epochs to run training for.')
 flags.DEFINE_float('learning_rate', 1e-2, 'Hyperparameter: learning rate.')
-flags.DEFINE_float('output_regularization', 0.0, 'Hyperparameter: feature reg')
-flags.DEFINE_float('l2_regularization', 0.0, 'Hyperparameter: l2 weight decay')
-flags.DEFINE_integer('batch_size', 28, 'Hyperparameter: batch size.')
+flags.DEFINE_float('output_regularization', 0.3, 'Hyperparameter: feature reg')
+flags.DEFINE_float('l2_regularization', 0.3, 'Hyperparameter: l2 weight decay')
+flags.DEFINE_integer('batch_size', 32, 'Hyperparameter: batch size.')
 flags.DEFINE_string('logdir', f'{THIS_DIR}/results_nam/logs_{datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")}',
                     'Path to dir where to store summaries.')
 flags.DEFINE_string('dataset_name', 'PoTeC',
                     'Name of the dataset to load for training.')
 flags.DEFINE_string('dataset_folder', '/Users/debor/repos/PoTeC-data',
                     'Folder where dataset is. How to load it must be defined in data_utils.py')
-flags.DEFINE_float('decay_rate', 0.995, 'Hyperparameter: Optimizer decay rate')
-flags.DEFINE_float('dropout', 0.5, 'Hyperparameter: Dropout rate')
+flags.DEFINE_float('decay_rate', 0.92, 'Hyperparameter: Optimizer decay rate')
+flags.DEFINE_float('dropout', 0.7, 'Hyperparameter: Dropout rate')
 flags.DEFINE_integer(
-    'data_split', 2, 'Dataset split index to use for splitting the training set into val and train. '
+    'data_split', 1, 'Dataset split index to use for splitting the training set into val and train. '
                      'Possible values are 1 to `FLAGS.num_splits`.')
 flags.DEFINE_integer('tf_seed', 1, 'seed for tf.')
-flags.DEFINE_float('feature_dropout', 0.0,
+flags.DEFINE_float('feature_dropout', 0.2,
                    'Hyperparameter: Prob. with which features are dropped')
 flags.DEFINE_integer(
-    'num_basis_functions', 1000, 'Number of basis functions '
+    'num_basis_functions', 2000, 'Number of basis functions '
                                  'to use in a FeatureNN for a real-valued feature.')
-flags.DEFINE_integer('units_multiplier', 2, 'Number of basis functions for a '
+flags.DEFINE_integer('units_multiplier', 8, 'Number of basis functions for a '
                                             'categorical feature')
 flags.DEFINE_boolean(
     'cross_val', True, 'Boolean flag indicating whether to '
@@ -79,7 +80,7 @@ flags.DEFINE_integer('n_models', 1, 'the number of models to train.')
 flags.DEFINE_integer('num_splits', 5, 'Number of data splits to use')
 flags.DEFINE_integer('fold_num', 1, 'Index of the fold to be used')
 flags.DEFINE_string(
-    'activation', 'exu', 'Activation function to used in the '
+    'activation', 'relu', 'Activation function to used in the '
                          'hidden layer. Possible options: (1) relu, (2) exu')
 flags.DEFINE_boolean(
     'regression', False, 'Boolean flag indicating whether we '
@@ -415,10 +416,12 @@ def single_split_training(data_gen,
             'units_multiplier': [2, 4],
             'shallow': [True, False],
             'tf_seed': [1, 2],
+            'activation': ['relu', 'exu'],
         }
 
         # create file where to log the results_baselines for the tuning
         hp_file_name = f'{curr_logdir}/hp_tuning_results.txt'
+        best_hp_file_name = f'{curr_logdir}/best_hps.json'
         os.makedirs(os.path.dirname(hp_file_name), exist_ok=True)
         with open(hp_file_name, 'w', encoding='utf8') as f:
             f.write('Hyperparameter tuning results\n')
@@ -445,6 +448,8 @@ def single_split_training(data_gen,
                 best_hps = hp_grid
                 with open(hp_file_name, 'a', encoding='utf8') as f:
                     f.write(f'Current best hyperparameters: {best_hps}\n')
+                with open(best_hp_file_name, 'w', encoding='utf8') as f:
+                    f.write(str(best_hps))
 
             elif not FLAGS.regression and val_score > best_val_score:
                 best_val_score = val_score
@@ -452,6 +457,8 @@ def single_split_training(data_gen,
                 best_hps = hp_grid
                 with open(hp_file_name, 'a', encoding='utf8') as f:
                     f.write(f'Current best hyperparameters: {best_hps}\n')
+                with open(best_hp_file_name, 'w', encoding='utf8') as f:
+                    f.write(str(best_hps))
             else:
                 with open(hp_file_name, 'a', encoding='utf8') as f:
                     f.write(f'Tested hyperparameters: {hp_grid}\n')
@@ -462,6 +469,9 @@ def single_split_training(data_gen,
 
         with open(hp_file_name, 'a', encoding='utf8') as f:
             f.write(f'Final best hyperparameters: {best_hps}\n')
+
+        with open(f'{logdir}/best_hps.json', 'w', encoding='utf8') as f:
+            f.write(str(best_hps))
 
         # repeat training one more time for this fold with the best hyperparameters
         FLAGS.hp_tuning = False
@@ -492,10 +502,12 @@ def single_split_training(data_gen,
             'units_multiplier': FLAGS.units_multiplier,
             'shallow': FLAGS.shallow,
             'tf_seed': FLAGS.tf_seed,
+            'activation': FLAGS.activation,
         }
-        hps = {'learning_rate': 0.01, 'output_regularization': 0.0, 'l2_regularization': 0.0, 'batch_size': 28,
-               'decay_rate': 0.995, 'dropout': 0.5, 'feature_dropout': 0.1, 'num_basis_functions': 1000,
-               'units_multiplier': 4, 'shallow': True, 'tf_seed': 2}
+
+        # write hps to json file
+        with open(f'{FLAGS.logdir}/hps.json', 'w', encoding='utf8') as f:
+            f.write(str(hps))
 
         train_score, val_score, test_scores, metric_dict = training(x_train, y_train, x_validation, y_validation,
                                                                     *test_data, curr_logdir, hps)
@@ -504,10 +516,13 @@ def single_split_training(data_gen,
 
 def main(argv):
     del argv  # Unused
+
     tf.logging.set_verbosity(tf.logging.INFO)
 
+    os.makedirs(FLAGS.logdir, exist_ok=True)
+
     data_x, data_y, column_names, split_criterion = data_utils.load_dataset(FLAGS.dataset_name, FLAGS.group_by,
-                                                                            FLAGS.dataset_folder)
+                                                                            FLAGS.dataset_folder, FLAGS.logdir)
     test_scores_all_models = []
     all_metrics = OrderedDict()
 
