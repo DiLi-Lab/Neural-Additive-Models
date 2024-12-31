@@ -884,8 +884,8 @@ def get_lexical_features(input_word_list):
     lexical_features = np.hstack(
         [features_entity, features_pos, features_we, features_we_lemma],
     )
-    lexical_feature_names = list(feature_names_entity) + list(feature_names_pos) + \
-                            list(feature_names_we) + list(feature_names_we_lemma)
+    lexical_feature_names = (list(feature_names_entity) + list(feature_names_pos) +
+                             list(feature_names_we) + list(feature_names_we_lemma))
 
     return lexical_features, lexical_feature_names
 
@@ -1101,18 +1101,18 @@ def get_combined_features(df_list):
     )
 
     lexical_features, lexical_feature_names = get_features_df_list_lexical(
-         df_list,
-      )
+        df_list,
+    )
 
     # data_arr = np.hstack(
     #    [data_arr_numeric, data_arr_cat, lexical_features],
     # )
 
     data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2, lexical_features])
-    #data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2])
+    # data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2])
 
-    feature_names = list(feature_names_numeric) + list(feature_names_numeric_2 + list(lexical_feature_names))
-    #feature_names = list(feature_names_numeric) + list(feature_names_numeric_2)
+    # feature_names = list(feature_names_numeric) + list(feature_names_numeric_2 + list(lexical_feature_names))
+    feature_names = list(feature_names_numeric) + list(feature_names_numeric_2)
     data_arr = np.nan_to_num(data_arr, nan=-1)
     data_arr = np.nan_to_num(data_arr.astype(np.float32))
 

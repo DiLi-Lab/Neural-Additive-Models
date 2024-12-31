@@ -190,7 +190,7 @@ def parse_args() -> dict:
         '--config',
         type=str,
         help='Path to config file',
-        default='evaluation_configs/config_baseline_hp_tuning_2_labels_new-reader-split.json'
+        default='evaluation_configs/config_baseline_hp_tuning_2_labels_new-reader-split-bq-acc-label.json'
     )
 
     parser.add_argument(

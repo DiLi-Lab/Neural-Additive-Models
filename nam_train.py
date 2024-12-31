@@ -92,6 +92,9 @@ flags.DEFINE_integer('early_stopping_epochs', 60, 'Early stopping epochs')
 flags.DEFINE_string('group_by', 'reader_id', 'Specifies the group label to split by for GroupKFold')
 flags.DEFINE_boolean('all_folds', True, 'Specifies whether to run all folds or just one fold')
 flags.DEFINE_boolean('hp_tuning', False, 'Specifies whether to run hyperparameter tuning or not')
+# can be: expert_cls_label (graduate reading text in graduate domain), expert_status (graduate or not),
+# mean_bq_accuracy (mean acc on background questions of respective text above 0.6)
+flags.DEFINE_string('label', 'mean_bq_accuracy', 'Specifies the label to use for classification')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -522,7 +525,8 @@ def main(argv):
     os.makedirs(FLAGS.logdir, exist_ok=True)
 
     data_x, data_y, column_names, split_criterion = data_utils.load_dataset(FLAGS.dataset_name, FLAGS.group_by,
-                                                                            FLAGS.dataset_folder, FLAGS.logdir)
+                                                                            FLAGS.dataset_folder, FLAGS.logdir,
+                                                                            FLAGS.label)
     test_scores_all_models = []
     all_metrics = OrderedDict()
 
