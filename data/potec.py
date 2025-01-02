@@ -43,6 +43,12 @@ class Potec(Dataset):
 
         # save the sample mapped to unique data identifiers to make sure it is reproducible
         sample_mapping = pd.DataFrame(
-            {'sample_id': range(len(reader_ids)), 'reader_id': reader_ids, 'text_id': text_ids, 'label': labels})
+            {
+                'sample_id': range(len(reader_ids)),
+                'reader_id': reader_ids,
+                'text_id': text_ids,
+                'label': labels,
+            },
+        )
 
         return dfs, np.array(labels), sample_mapping

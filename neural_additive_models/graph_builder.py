@@ -370,7 +370,8 @@ def build_graph(
     x1, y1 = iterator.get_next()
     loss_tensor, grads = grad(nn_model, x1, y1, loss_fn, train_vars)
     update_step = optimizer.apply_gradients(
-        zip(grads, train_vars), global_step=global_step)
+        zip(grads, train_vars), global_step=global_step,
+    )
     avg_loss, avg_loss_update_op = tf.metrics.mean(
         loss_tensor, name='avg_train_loss')
     tf.summary.scalar('avg_train_loss', avg_loss)

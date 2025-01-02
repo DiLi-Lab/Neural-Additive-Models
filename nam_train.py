@@ -27,6 +27,7 @@ from typing import Tuple, List, Dict, Any
 from absl import app
 from absl import flags
 import numpy as np
+import yaml
 import tensorflow.compat.v1 as tf
 from sklearn import metrics
 from tqdm import tqdm
@@ -89,8 +90,10 @@ flags.DEFINE_boolean('shallow', False, 'Whether to use shallow or deep NN.')
 flags.DEFINE_boolean('use_dnn', False, 'Deep NN baseline.')
 flags.DEFINE_integer('early_stopping_epochs', 60, 'Early stopping epochs')
 flags.DEFINE_string('group_by', 'reader_id', 'Specifies the group label to split by for GroupKFold')
+flags.DEFINE_string('config_path', None, 'Define where best config is stored.')
 flags.DEFINE_boolean('all_folds', True, 'Specifies whether to run all folds or just one fold')
 flags.DEFINE_boolean('hp_tuning', False, 'Specifies whether to run hyperparameter tuning or not')
+flags.DEFINE_integer('gpu', 7, 'Specifies which gpu to use')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -404,17 +407,17 @@ def single_split_training(data_gen,
         # This is done only once for the first fold, the hps are defined in the flags on top of the file
         # TODO: move this to config file or somewhere else
         hyper_parameters = {
-            'learning_rate': [1e-2, 1e-3],
+            'learning_rate': [1e-3, 1e-4],
             'output_regularization': [0.0, 0.1],
             'l2_regularization': [0.0, 0.1],
-            'batch_size': [28, 32],
+            'batch_size': [32],
             'decay_rate': [0.99, 0.995],
-            'dropout': [0.5, 0.7],
+            'dropout': [0.0, 0.5, 0.7],
             'feature_dropout': [0.0, 0.1],
             'num_basis_functions': [1000, 2000],
-            'units_multiplier': [2, 4],
+            'units_multiplier': [2, 4, 8],
             'shallow': [True, False],
-            'tf_seed': [1, 2],
+            'tf_seed': [1],
         }
 
         # create file where to log the results_baselines for the tuning
@@ -479,23 +482,29 @@ def single_split_training(data_gen,
         return best_hps, best_train_score, best_val_score, best_test_scores, metric_dict
 
     else:
-        # TODO: make this nicer
-        hps = {
-            'learning_rate': FLAGS.learning_rate,
-            'output_regularization': FLAGS.output_regularization,
-            'l2_regularization': FLAGS.l2_regularization,
-            'batch_size': FLAGS.batch_size,
-            'decay_rate': FLAGS.decay_rate,
-            'dropout': FLAGS.dropout,
-            'feature_dropout': FLAGS.feature_dropout,
-            'num_basis_functions': FLAGS.num_basis_functions,
-            'units_multiplier': FLAGS.units_multiplier,
-            'shallow': FLAGS.shallow,
-            'tf_seed': FLAGS.tf_seed,
-        }
-        hps = {'learning_rate': 0.01, 'output_regularization': 0.0, 'l2_regularization': 0.0, 'batch_size': 28,
-               'decay_rate': 0.995, 'dropout': 0.5, 'feature_dropout': 0.1, 'num_basis_functions': 1000,
-               'units_multiplier': 4, 'shallow': True, 'tf_seed': 2}
+        if FLAGS.config_path is not None:
+
+            print('++ Loading best config.')
+            with open(f'{FLAGS.config_path}.yaml', 'r') as file:
+                hps = yaml.safe_load(file)
+
+        else:
+            hps = {
+                'learning_rate': FLAGS.learning_rate,
+                'output_regularization': FLAGS.output_regularization,
+                'l2_regularization': FLAGS.l2_regularization,
+                'batch_size': FLAGS.batch_size,
+                'decay_rate': FLAGS.decay_rate,
+                'dropout': FLAGS.dropout,
+                'feature_dropout': FLAGS.feature_dropout,
+                'num_basis_functions': FLAGS.num_basis_functions,
+                'units_multiplier': FLAGS.units_multiplier,
+                'shallow': FLAGS.shallow,
+                'tf_seed': FLAGS.tf_seed,
+            }
+            # hps = {'learning_rate': 0.01, 'output_regularization': 0.0, 'l2_regularization': 0.0, 'batch_size': 28,
+            #        'decay_rate': 0.995, 'dropout': 0.5, 'feature_dropout': 0.1, 'num_basis_functions': 1000,
+            #        'units_multiplier': 4, 'shallow': True, 'tf_seed': 2}
 
         train_score, val_score, test_scores, metric_dict = training(x_train, y_train, x_validation, y_validation,
                                                                     *test_data, curr_logdir, hps)
@@ -503,6 +512,14 @@ def single_split_training(data_gen,
 
 
 def main(argv):
+
+    GPU = FLAGS.gpu
+    os.environ["CUDA_VISIBLE_DEVICES"] = str(GPU)
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    config = tf.ConfigProto(log_device_placement=True)
+    config.gpu_options.per_process_gpu_memory_fraction = 0.5
+    config.gpu_options.allow_growth = True
+    tf_session = tf.Session(config=config)
     del argv  # Unused
     tf.logging.set_verbosity(tf.logging.INFO)
 

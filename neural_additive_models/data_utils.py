@@ -193,9 +193,15 @@ def load_potec_data(split_criterion_str, data_folder: str = ''):
 
     sample_mapping.to_csv('sample_mapping.csv', index=False)
 
-    X, feature_names = get_combined_features(potec_sp_dfs)
+    filename = 'PoTeC-data/preprocessed_df.csv'
+    try:
+        print('Loading already preprocessed potec data')
+        x_df = pd.read_csv(filename)
+    except FileNotFoundError:
+        X, feature_names = get_combined_features(potec_sp_dfs)
 
-    x_df = pd.DataFrame(X, columns=feature_names)
+        x_df = pd.DataFrame(X, columns=feature_names)
+        x_df.to_csv(filename, index=None)
 
     split_criterion = [df[split_criterion_str].iloc[0] for df in potec_sp_dfs]
 
@@ -407,7 +413,7 @@ def transform_data(df):
             ]
         else:
             new_column_names.append(col_name)
-    cat_ohe_step = ('ohe', OneHotEncoder(sparse=False, handle_unknown='ignore'))
+    cat_ohe_step = ('ohe', OneHotEncoder(sparse_output=False, handle_unknown='ignore'))
 
     cat_pipe = Pipeline([cat_ohe_step])
     num_pipe = Pipeline([('identity', FunctionTransformer(validate=True))])
