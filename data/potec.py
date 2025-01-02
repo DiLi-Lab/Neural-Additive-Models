@@ -37,6 +37,13 @@ class Potec(Dataset):
             elif label_name == 'expert_status':
                 label = df['level_of_studies_numeric'].iloc[0]
 
+            elif label_name == 'mean_bq_accuracy':
+                label = df['mean_acc_bq'].iloc[0]
+
+                # if the participant had 2/3 correct answers, we consider them as experts in the topic of the text
+                # they just read
+                label = 1 if label > 0.6 else 0
+
             labels.append(label)
 
             dfs.append(df)
