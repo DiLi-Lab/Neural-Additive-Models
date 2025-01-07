@@ -132,3 +132,5 @@ dmypy.json
 results_baselines/
 logs/
 /results_nam/
+/log_out*.txt
+PoTeC-data/*

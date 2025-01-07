@@ -194,6 +194,10 @@ def load_potec_data(split_criterion_str, data_folder: str = '', log_dir: str = '
     sample_mapping.to_csv(f'{log_dir}/sample_mapping.csv', index=False)
 
     filename = 'PoTeC-data/preprocessed_df.csv'
+
+    if not osp.exists('PoTeC-data'):
+        osp.makedirs('PoTeC-data')
+
     try:
         print('Loading already preprocessed potec data')
         x_df = pd.read_csv(filename)

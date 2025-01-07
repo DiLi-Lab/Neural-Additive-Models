@@ -18,13 +18,14 @@ from data.extract_features import get_combined_features
 from baseline_models.random_forest import RandomForest
 from baseline_models.dummy_baseline import DummyBaseline
 from data.potec import Potec
+from neural_additive_models import data_utils
 
 
 def evaluate_potec_expert_clf(
         root_path: str | Path,
         potec_folder: str,
         split_criterion_str: str,
-        label_col: str,
+        label: str,
         random_state: int,
         num_cv_folds_outer: int = 5,
         num_cv_folds_inner: int = 3,
@@ -33,15 +34,10 @@ def evaluate_potec_expert_clf(
     random.seed(random_state)
     np.random.seed(random_state)
     today = datetime.now().strftime('%Y-%m-%d-%H:%M')
-    result_folder = root_path / 'results_baselines' / f'evaluation_split-{split_criterion_str}_{today}'
+    result_folder = root_path / 'results_baselines' / f'{today}_label-{label}_split-{split_criterion_str}'
 
     if not result_folder.exists():
         result_folder.mkdir(parents=True)
-
-    potec_dataset = Potec(potec_repo_root=potec_folder)
-    potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_scanpaths(label_name=label_col)
-
-    sample_mapping.to_csv(result_folder / 'sample_mapping.csv', index=False)
 
     # just use those if you don't want to run hp tuning
     params_rf = {'criterion': ['gini'], 'max_depth': [32], 'max_features': [None], 'n_estimators': [700],
@@ -68,9 +64,8 @@ def evaluate_potec_expert_clf(
 
     data_split_dict = {}
 
-    X, feature_names = get_combined_features(potec_sp_dfs)
-
-    split_criterion = [df[split_criterion_str].iloc[0] for df in potec_sp_dfs]
+    X, y, feature_names, split_criterion = data_utils.load_dataset('PoTeC', split_criterion_str,
+                                                                   potec_folder, str(result_folder), label)
 
     print(f'# expert reading (experts reading text in their expert domain): {np.count_nonzero(y == 1)}')
     print(f'# non-expert reading (beginners reading text OR experts reading text in non-expert domain): '
@@ -79,8 +74,8 @@ def evaluate_potec_expert_clf(
     outer_fold = 1
     best_score = 0
 
-    outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer, random_state=random_state, shuffle=True)
-    inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner, random_state=random_state, shuffle=True)
+    outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer)
+    inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner)
 
     for train_index, test_index in outer_kf.split(X, y, groups=split_criterion):
         print(f'\n{"*" * 50}')
@@ -190,7 +185,7 @@ def parse_args() -> dict:
         '--config',
         type=str,
         help='Path to config file',
-        default='evaluation_configs/config_baseline_hp_tuning_2_labels_new-reader-split-bq-acc-label.json'
+        default='evaluation_configs/config_baseline_hp_tuning_2_labels_new-reader-split_label-all_bq_correct.json'
     )
 
     parser.add_argument(

@@ -5,5 +5,5 @@
   "grid_search_verbosity": 1,
   "data_folder": "/Users/debor/repos/PoTeC-data",
   "random_state": 21,
-  "label_col": "reader_domain_numeric"
+  "label": "reader_domain_numeric"
 }

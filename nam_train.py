@@ -49,7 +49,7 @@ flags.DEFINE_float('learning_rate', 1e-2, 'Hyperparameter: learning rate.')
 flags.DEFINE_float('output_regularization', 0.3, 'Hyperparameter: feature reg')
 flags.DEFINE_float('l2_regularization', 0.3, 'Hyperparameter: l2 weight decay')
 flags.DEFINE_integer('batch_size', 32, 'Hyperparameter: batch size.')
-flags.DEFINE_string('logdir', f'{THIS_DIR}/results_nam/logs_{datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")}',
+flags.DEFINE_string('logdir', f'{THIS_DIR}/results_nam/{datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")}',
                     'Path to dir where to store summaries.')
 flags.DEFINE_string('dataset_name', 'PoTeC',
                     'Name of the dataset to load for training.')
@@ -95,9 +95,11 @@ flags.DEFINE_string('config_path', None, 'Define where best config is stored.')
 flags.DEFINE_boolean('all_folds', True, 'Specifies whether to run all folds or just one fold')
 flags.DEFINE_boolean('hp_tuning', False, 'Specifies whether to run hyperparameter tuning or not')
 flags.DEFINE_integer('gpu', 7, 'Specifies which gpu to use')
-# can be: expert_cls_label (graduate reading text in graduate domain), expert_status (graduate or not),
-# mean_bq_accuracy (mean acc on background questions of respective text above 0.6)
-flags.DEFINE_string('label', 'mean_bq_accuracy', 'Specifies the label to use for classification')
+
+# label can be: expert_cls_label (graduate reading text in graduate domain), expert_status (graduate or not),
+# 2_bq_correct (mean acc on background questions of respective text above 0.6), 2_tq_correct (mean acc on
+# text questions of respective text above 0.6), all_bq_correct (all background questions correct), all_tq_correct
+flags.DEFINE_string('label', 'all_bq_correct', 'Specifies the label to use for classification')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -498,8 +500,12 @@ def single_split_training(data_gen,
         if FLAGS.config_path is not None:
 
             print('++ Loading best config.')
-            with open(f'{FLAGS.config_path}.yaml', 'r') as file:
-                hps = yaml.safe_load(file)
+            try:
+                with open(f'{FLAGS.config_path}.yaml', 'r') as file:
+                    hps = yaml.safe_load(file)
+            except FileNotFoundError:
+                with open(f'{FLAGS.config_path}.json', 'r') as file:
+                    hps = yaml.safe_load(file)
 
         else:
             hps = {
@@ -514,10 +520,8 @@ def single_split_training(data_gen,
                 'units_multiplier': FLAGS.units_multiplier,
                 'shallow': FLAGS.shallow,
                 'tf_seed': FLAGS.tf_seed,
+                'activation': FLAGS.activation,
             }
-            # hps = {'learning_rate': 0.01, 'output_regularization': 0.0, 'l2_regularization': 0.0, 'batch_size': 28,
-            #        'decay_rate': 0.995, 'dropout': 0.5, 'feature_dropout': 0.1, 'num_basis_functions': 1000,
-            #        'units_multiplier': 4, 'shallow': True, 'tf_seed': 2}
 
         # write hps to json file
         with open(f'{FLAGS.logdir}/hps.json', 'w', encoding='utf8') as f:
@@ -539,6 +543,9 @@ def main(argv):
     tf_session = tf.Session(config=config)
     del argv  # Unused
 
+    FLAGS.logdir = (f'{FLAGS.logdir}_label-{FLAGS.label}_split-{FLAGS.group_by}'
+                    f'{"_hp-tuning" if FLAGS.hp_tuning else ""}')
+
     tf.logging.set_verbosity(tf.logging.INFO)
 
     os.makedirs(FLAGS.logdir, exist_ok=True)
@@ -547,7 +554,7 @@ def main(argv):
                                                                             FLAGS.dataset_folder, FLAGS.logdir,
                                                                             FLAGS.label)
     test_scores_all_models = []
-    all_metrics = OrderedDict()
+    all_metrics = {}
 
     if FLAGS.all_folds:
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
@@ -579,6 +586,8 @@ def main(argv):
 
     print(f'Test scores for all models for each fold: {test_scores_all_models}')
     print(f'Mean test scores for all models: {np.mean(test_scores_all_models, axis=0)}')
+
+    all_metrics['mean_score_all_folds'] = np.mean(test_scores_all_models, axis=0)
 
     with open(f'{FLAGS.logdir}/metrics_dict.txt', 'w', encoding='utf8') as f:
         f.write(str(all_metrics))
