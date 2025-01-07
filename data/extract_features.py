@@ -1023,6 +1023,20 @@ def get_features_from_df_list_categorical(
     return out_feature_matrix, feature_names
 
 
+def get_reader_features_from_df_list(df_list):
+    age = []
+    gender = []
+
+    for cur_df in df_list:
+        age.append(cur_df['age'].values[0])
+
+        # 0=male, 1=female
+        gender.append(cur_df['gender_numerical'].values[0])
+
+    # TODO: finish
+    pass
+
+
 def get_combined_features(df_list):
     data_arr_numeric, feature_names_numeric = get_features_from_df_list_numeric(
         df_list,
