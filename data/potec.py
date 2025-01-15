@@ -16,9 +16,10 @@ class Potec(Dataset):
         self.reading_measures_folder = self.repo_root / 'eyetracking_data/reading_measures/'
         self.merged_reading_measures_folder = self.repo_root / 'eyetracking_data/reading_measures_merged/'
 
-    def load_potec_merged_scanpaths(self, label_name: str) -> (list, pd.DataFrame):
+    @staticmethod
+    def _load_data(path, label_name):
         # sort to make sure we have the same order
-        paths = sorted(list(self.merged_scanpaths_folder.glob('*.tsv')))
+        paths = sorted(list(path.glob('*.tsv')))
         dfs = []
 
         reader_ids = []
@@ -59,6 +60,10 @@ class Potec(Dataset):
                 label = df['mean_acc_bq'].iloc[0]
                 label = 1 if label == 1 else 0
 
+            else:
+                raise ValueError(f'Unknown label name: {label_name}. You can use either expert_cls_label, '
+                                 f'expert_status, 2_bq_correct, 2_tq_correct, all_bq_correct, all_tq_correct')
+
             labels.append(label)
 
             dfs.append(df)
@@ -74,3 +79,9 @@ class Potec(Dataset):
         )
 
         return dfs, np.array(labels), sample_mapping
+
+    def load_potec_merged_reading_measures(self, label_name: str):
+        return self._load_data(self.merged_reading_measures_folder, label_name)
+
+    def load_potec_merged_scanpaths(self, label_name: str) -> (list, pd.DataFrame):
+        return self._load_data(self.merged_scanpaths_folder, label_name)

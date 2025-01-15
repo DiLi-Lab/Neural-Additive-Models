@@ -1,9 +1,9 @@
 {
   "split_criterion_str":  "reader_id",
   "num_cv_folds_outer": 5,
-  "num_cv_folds_inner": 3,
+  "num_cv_folds_inner": 5,
   "grid_search_verbosity": 1,
-  "data_folder": "/Users/debor/repos/PoTeC-data",
+  "potec_folder": "/Users/debor/repos/PoTeC-data",
   "random_state": 21,
-  "label": "reader_domain_numeric"
+  "label": "expert_status"
 }

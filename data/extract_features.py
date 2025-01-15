@@ -987,7 +987,7 @@ def get_features_from_df_list_categorical(
     """
     function to extract features for random forest baseline
     params:
-      df_list: list of dataframes containing the data for user, book, page
+      df_list: list of dataframes containing the data for user, text
       use_cols: list of columns to extract features from
       feature_values: list of list of different values
     """
@@ -1023,111 +1023,220 @@ def get_features_from_df_list_categorical(
     return out_feature_matrix, feature_names
 
 
-def get_reader_features_from_df_list(df_list):
-    age = []
-    gender = []
+def get_gaze_text_features_from_df_list(df_list, text_features, gaze_features, feature_aggregations):
+    feature_names = []
 
-    for cur_df in df_list:
-        age.append(cur_df['age'].values[0])
+    out_feature_matrix = np.zeros([len(df_list), len(text_features) * len(gaze_features) * len(feature_aggregations)])
 
-        # 0=male, 1=female
-        gender.append(cur_df['gender_numerical'].values[0])
+    data_number = 0
+    for cur_df in tqdm(df_list, desc='Extracting gaze text features: '):
+        feature_id = 0
+        for text_feature in text_features:
+            for gaze_feature in gaze_features:
 
-    # TODO: finish
-    pass
+                # get only the lines where the text feature is true
+                cur_df_text = cur_df[cur_df[text_feature] == 1]
+
+                cur_feats = np.array(cur_df_text[gaze_feature], dtype=np.float32)
+
+                for aggregation_function in feature_aggregations:
+                    if len(cur_df_text) == 0:
+                        cur_feat = np.nan
+                    else:
+                        cur_feat = get_feature_from_list(cur_feats, aggregation_function)
+
+                    if data_number == 0:
+                        cur_feature_name = f'{text_feature}_{gaze_feature}_{aggregation_function}'
+                        feature_names.append(cur_feature_name)
+
+                    out_feature_matrix[data_number, feature_id] = cur_feat
+                    feature_id += 1
+        data_number += 1
+
+    return out_feature_matrix, feature_names
+
+
+def get_length_and_freq_features_from_df_list(df_list, gaze_features, features, feature_aggregations):
+
+    # the feature will be split into low, medium, high based on tertiles, therefore 3 bins
+    out_feature_matrix = np.zeros([len(df_list), len(gaze_features) * len(features) * len(feature_aggregations) * 3])
+    feature_names = []
+
+    data_number = 0
+    for cur_df in tqdm(df_list, desc='Extracting length and frequency features: '):
+        feature_id = 0
+        for gaze_feature in gaze_features:
+            for feature in features:
+                lengths = np.array(cur_df[feature], dtype=np.float32)
+
+                # bin the features values into low, medium, high based on tertiles
+                low = np.nanquantile(lengths, 0.33)
+                medium = np.nanquantile(lengths, 0.66)
+
+                indices_low = np.where(lengths <= low, 1, 0)
+                indices_medium = np.where(np.logical_and(lengths > low, lengths <= medium), 1, 0)
+                indices_high = np.where(lengths > medium, 1, 0)
+
+                # get the lines from cur_feats where indices_low, indices_medium, indices_high are 1
+                cur_feats_low = np.array(cur_df[indices_low == 1][gaze_feature], dtype='float32')
+                cur_feats_medium = np.array(cur_df[indices_medium == 1][gaze_feature], dtype='float32')
+                cur_feats_high = np.array(cur_df[indices_high == 1][gaze_feature], dtype='float32')
+
+                feat_dfs = [('low', cur_feats_low), ('medium', cur_feats_medium), ('high', cur_feats_high)]
+
+                for aggregation_function in feature_aggregations:
+
+                    for name, feat_df in feat_dfs:
+                        if len(feat_df) == 0:
+                            cur_feat = np.nan
+                        else:
+                            cur_feat = get_feature_from_list(feat_df, aggregation_function)
+
+                        if data_number == 0:
+                            cur_feature_name = f'{gaze_feature}_{feature}_{name}_{aggregation_function}'
+                            feature_names.append(cur_feature_name)
+
+                        out_feature_matrix[data_number, feature_id] = cur_feat
+                        feature_id += 1
+        data_number += 1
+
+    return out_feature_matrix, feature_names
 
 
 def get_combined_features(df_list):
     data_arr_numeric, feature_names_numeric = get_features_from_df_list_numeric(
         df_list,
         use_cols=[
-            'fixation_duration',
-            'previous_saccade_duration',
-            'next_saccade_duration',
             'FFD',
-            'FD',
+            # 'FD',
             'FPRT',
-            'SFD',
+            # 'SFD',
             'FRT',
             'TFT',
             'RRT',
-            'RPD_inc',
+            # 'RPD_inc',
             'RPD_exc',
-            'RBRT',
+            # 'RBRT',
             'Fix',
-            'FPF',
+            # 'FPF',
             'FPReg',
             'RR',
-            'LP',
-            'SL_in',
+            # 'LP',
+            # 'SL_in',
             'SL_out',
             'TRC_out',
-            'TRC_in',
-            'annotated_type_frequency_normalized',
-            'avg_cond_prob_in_bigrams',
-            'avg_cond_prob_in_trigrams',
-            'cumulative_character_bigram_corpus_frequency_normalized',
-            'cumulative_character_bigram_lexicon_frequency_normalized',
-            'cumulative_character_corpus_frequency_normalized',
-            'cumulative_character_lexicon_frequency_normalized',
-            'cumulative_character_trigram_corpus_frequency_normalized',
-            'cumulative_character_trigram_lexicon_frequency_normalized',
-            'cumulative_syllable_corpus_frequency_normalized',
-            'cumulative_syllable_lexicon_frequency_normalized',
-            'document_frequency_normalized',
-            'familiarity_normalized',
-            'neighbors_coltheart_all_count_normalized',
-            'neighbors_coltheart_all_cum_freq_normalized',
-            'neighbors_coltheart_higher_freq_count_normalized',
-            'neighbors_coltheart_higher_freq_cum_freq_normalized',
-            'neighbors_levenshtein_all_count_normalized',
-            'neighbors_levenshtein_all_cum_freq_normalized',
-            'neighbors_levenshtein_higher_freq_count_normalized',
-            'neighbors_levenshtein_higher_freq_cum_freq_normalized',
-            'regularity_normalized',
-            'initial_bigram_frequency_normalized',
-            'initial_letter_frequency_normalized',
-            'initial_trigram_frequency_normalized',
-            'sentence_frequency_normalized',
-            'lemma_frequency_normalized',
-            'type_frequency_normalized',
+            # 'TRC_in',
         ],
-        feature_aggregations=['mean', 'std', 'median', 'skew', 'kurtosis'],
+        feature_aggregations=['mean', 'std', 'skew', 'kurtosis'],
     )
 
-    data_arr_numeric_2, feature_names_numeric_2 = get_features_from_df_list_numeric(
+    data_arr_numeric_2, feature_names_numeric_2 = get_gaze_text_features_from_df_list(
         df_list,
-        use_cols=['is_abbreviation',
-                  'is_clause_beginning',
-                  'is_in_parentheses',
-                  'is_in_quote',
-                  'is_sent_beginning',
-                  'is_expert_technical_term',
-                  'is_general_technical_term',
-                  'word_length',
-                  'lemma_length_chars',
-                  'type_length_syllables',
-                  'contains_abbreviation',
-                  'contains_hyphen',
-                  'contains_symbol',
-                  ],
+        text_features=['is_abbreviation',
+                       'is_clause_beginning',
+                       'is_in_parentheses',
+                       'is_in_quote',
+                       'is_sent_beginning',
+                       'is_expert_technical_term',
+                       'is_general_technical_term',
+                       'contains_abbreviation',
+                       'contains_hyphen',
+                       'contains_symbol',
+                       ],
+        gaze_features=[
+            'FFD',
+            # 'FD',
+            'FPRT',
+            'FRT',
+            'TFT',
+            'RRT',
+            # 'RPD_inc',
+            'RPD_exc',
+            # 'RBRT',
+            'Fix',
+            # 'FPF',
+            'FPReg',
+            'RR',
+            # 'SL_in',
+            'SL_out',
+            'TRC_out',
+            # 'TRC_in',
+        ],
         feature_aggregations=['mean', 'std'],
     )
 
-    lexical_features, lexical_feature_names = get_features_df_list_lexical(
+    data_arr_numeric_3, feature_names_numeric_3 = get_length_and_freq_features_from_df_list(
         df_list,
+        gaze_features=[
+            'FFD',
+            # 'FD',
+            'FPRT',
+            'FRT',
+            'TFT',
+            'RRT',
+            #'RPD_inc',
+            'RPD_exc',
+            # 'RBRT',
+            'Fix',
+            # 'FPF',
+            'FPReg',
+            'RR',
+            # 'SL_in',
+            'SL_out',
+            'TRC_out',
+            # 'TRC_in',
+        ],
+        features=[
+            'word_length',
+            # 'lemma_length_chars',
+            # 'type_length_syllables',
+            # 'annotated_type_frequency_normalized',
+            # 'avg_cond_prob_in_bigrams',
+            # 'avg_cond_prob_in_trigrams',
+            # 'cumulative_character_bigram_corpus_frequency_normalized',
+            # 'cumulative_character_bigram_lexicon_frequency_normalized',
+            # 'cumulative_character_corpus_frequency_normalized',
+            # 'cumulative_character_lexicon_frequency_normalized',
+            # 'cumulative_character_trigram_corpus_frequency_normalized',
+            # 'cumulative_character_trigram_lexicon_frequency_normalized',
+            # 'cumulative_syllable_corpus_frequency_normalized',
+            # 'cumulative_syllable_lexicon_frequency_normalized',
+            # 'document_frequency_normalized',
+            'familiarity_normalized',
+            # 'neighbors_coltheart_all_count_normalized',
+            # 'neighbors_coltheart_all_cum_freq_normalized',
+            # 'neighbors_coltheart_higher_freq_count_normalized',
+            # 'neighbors_coltheart_higher_freq_cum_freq_normalized',
+            # 'neighbors_levenshtein_all_count_normalized',
+            # 'neighbors_levenshtein_all_cum_freq_normalized',
+            # 'neighbors_levenshtein_higher_freq_count_normalized',
+            # 'neighbors_levenshtein_higher_freq_cum_freq_normalized',
+            'regularity_normalized',
+            # 'initial_bigram_frequency_normalized',
+            # 'initial_letter_frequency_normalized',
+            # 'initial_trigram_frequency_normalized',
+            # 'sentence_frequency_normalized',
+            'lemma_frequency_normalized',
+            # 'type_frequency_normalized',
+        ],
+        feature_aggregations=['mean', 'std'],
     )
+
+
+    # lexical_features, lexical_feature_names = get_features_df_list_lexical(
+    #    df_list,
+    # )
 
     # data_arr = np.hstack(
     #    [data_arr_numeric, data_arr_cat, lexical_features],
     # )
 
-    data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2, lexical_features])
+    data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2, data_arr_numeric_3])
     # data_arr = np.hstack([data_arr_numeric, data_arr_numeric_2])
 
-    feature_names = list(feature_names_numeric) + list(feature_names_numeric_2 + list(lexical_feature_names))
+    feature_names = list(feature_names_numeric) + list(feature_names_numeric_2 + list(feature_names_numeric_3))
     # feature_names = list(feature_names_numeric) + list(feature_names_numeric_2)
-    data_arr = np.nan_to_num(data_arr, nan=-1)
+    data_arr = np.nan_to_num(data_arr, nan=0)
     data_arr = np.nan_to_num(data_arr.astype(np.float32))
 
     return data_arr, feature_names

@@ -189,14 +189,14 @@ def load_potec_data(split_criterion_str, data_folder: str = '', log_dir: str = '
         data_folder = osp.join(DATA_PATH, 'potec')
 
     potec_dataset = Potec(potec_repo_root=data_folder)
-    potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_scanpaths(label_name=label)
+    potec_sp_dfs, y, sample_mapping = potec_dataset.load_potec_merged_reading_measures(label_name=label)
 
     sample_mapping.to_csv(f'{log_dir}/sample_mapping.csv', index=False)
 
     filename = 'PoTeC-data/preprocessed_df.csv'
 
     if not osp.exists('PoTeC-data'):
-        osp.makedirs('PoTeC-data')
+        osp.makedir('PoTeC-data')
 
     try:
         print('Loading already preprocessed potec data')
