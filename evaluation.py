@@ -40,16 +40,16 @@ def evaluate_potec_expert_clf(
         result_folder.mkdir(parents=True)
 
     # just use those if you don't want to run hp tuning
-    params_rf = {'criterion': ['gini'], 'max_depth': [32], 'max_features': [None], 'n_estimators': [700],
-                 'n_jobs': [-1], 'random_state': [21]}
-    params_gb = {'criterion': ['squared_error'], 'loss': ['log_loss'], 'max_depth': [32], 'max_features': ['log2'],
-                 'n_estimators': [500], 'random_state': [21]}
-    params_svc = {'C': [1], 'gamma': ['scale'], 'kernel': ['rbf'], 'random_state': [21]}
+    #params_rf = {'criterion': ['gini'], 'max_depth': [32], 'max_features': [None], 'n_estimators': [700],
+             #    'n_jobs': [-1], 'random_state': [21]}
+    #params_gb = {'criterion': ['squared_error'], 'loss': ['log_loss'], 'max_depth': [32], 'max_features': ['log2'],
+             #    'n_estimators': [500], 'random_state': [21]}
+    #params_svc = {'C': [1], 'gamma': ['scale'], 'kernel': ['rbf'], 'random_state': [21]}
 
-    rf_model = RandomForest(root=result_folder, split_criterion=split_criterion_str, param_grid=params_rf)
+    rf_model = RandomForest(root=result_folder, split_criterion=split_criterion_str)
     dummy_bsl = DummyBaseline(strategy='most_frequent', root=result_folder, split_criterion=split_criterion_str)
-    gbcl = GradientBoostingCls(root=result_folder, split_criterion=split_criterion_str, param_grid=params_gb)
-    svc = SVCls(root=result_folder, split_criterion=split_criterion_str, param_grid=params_svc)
+    gbcl = GradientBoostingCls(root=result_folder, split_criterion=split_criterion_str)
+    svc = SVCls(root=result_folder, split_criterion=split_criterion_str)
 
     baseline_models = [
         rf_model,

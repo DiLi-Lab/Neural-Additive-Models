@@ -39,7 +39,7 @@ class SVCls(Model):
 
         if self.param_grid is None:
             self.param_grid = {
-                'C': [50, 100, 300, 400, 500, 700, 900, 1000, 1200],
+                'C': [50, 100, 500, 700, 900, 1000, 1200],
                 'kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
                 'degree': [3, 4, 5, 6],
                 'gamma': ['scale', 'auto'],

@@ -39,7 +39,7 @@ class RandomForest(Model):
 
         if self.param_grid is None:
             self.param_grid = {
-                'n_estimators': [50, 100, 300, 400, 500, 700, 900, 1000, 1200],
+                'n_estimators': [50, 100, 500, 700, 1000, 1200],
                 'max_features': ['sqrt', 'log2', None],
                 'max_depth': [2, 4, 8, 16, 32, 64, None],
                 'criterion': ['entropy', 'gini', 'log_loss'],

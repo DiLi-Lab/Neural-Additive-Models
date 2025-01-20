@@ -1,5 +1,4 @@
 import argparse
-import json
 
 import numpy as np
 import tensorflow.compat.v2 as tf
@@ -16,6 +15,8 @@ import os.path as osp
 
 import tensorflow as tf
 
+from textwrap import wrap
+
 
 def inverse_min_max_scaler(x, min_val, max_val):
     return (x + 1) / 2 * (max_val - min_val) + min_val
@@ -24,7 +25,7 @@ def inverse_min_max_scaler(x, min_val, max_val):
 def load_nam(argv):
     del argv
 
-    logs_model = '2025-01-14-09:36_label-all_bq_correct_split-reader_id'
+    logs_model = 'new_data/2025-01-18-23:35_label-all_bq_correct_split-reader_id'
     label = 'all_bq_correct'
 
     FLAGS.logdir = f'/Users/debor/repos/PoTeC/feature_analysis/{logs_model}/'
@@ -123,7 +124,6 @@ def load_nam(argv):
         single_features_scaled[col] = inverse_min_max_scaler(
             single_features[i][:, 0], min_val, max_val)
 
-    col_names = {dataset_name: {x: x for x in feature_names}}
 
     # map all the feature names to the predictions of each unique value of that feature
     feature_predictions_per_value = {col: predictions for col, predictions in zip(feature_names, feature_predictions)}
@@ -132,6 +132,12 @@ def load_nam(argv):
     mean_pred = {}
 
     feature_label_mapping = {}
+    label_file = osp.join(this_repo_path, 'potec_feature_names.yaml')
+    with open(label_file, 'r') as file:
+        features_name_potec = yaml.safe_load(file)
+
+    col_names = {'PoTeC': features_name_potec}
+
     feature_label_mapping['PoTeC'] = {}
 
     for i, col in enumerate(feature_names):
@@ -141,46 +147,55 @@ def load_nam(argv):
     for feature in feature_names:
         mean_pred[feature] = np.mean([feature_predictions_per_value[feature][i] for i in all_indices[feature]])
 
-    print(mean_pred)
-
     feature_names, x2 = compute_mean_feature_importance(feature_predictions_per_value, mean_pred)
-    cols = [col_names[dataset_name][feature] for feature in feature_names]
+    feature_names_abs, x_abs = compute_mean_feature_importance(feature_predictions_per_value, mean_pred, absolute=True)
+    cols = [col_names[dataset_name][feature] if col_names[dataset_name][feature] != '' else feature for feature in feature_names]
 
-    num_top_features = 10
+    num_top_features = 8
 
-    fig, top_features = plot_mean_feature_importance(x2, cols, dataset_name, num_top_features=num_top_features)
-    fig.savefig(osp.join(FLAGS.logdir, f'mean_feature_importance_top_{num_top_features}.png'))
+    fig, top_features = plot_mean_feature_importance(x2, cols, dataset_name, num_top_features=num_top_features, title='Most predictive features for expert')
+    fig.savefig(osp.join(FLAGS.logdir, f'mean_feature_importance_top_{num_top_features}.eps'), format='eps')
 
-    fig_2, bottom_features = plot_mean_feature_importance(x2, cols, dataset_name, num_top_features=num_top_features, direction='bottom')
-    fig_2.savefig(osp.join(FLAGS.logdir, f'mean_feature_importance_bottom_{num_top_features}.png'))
+    fig_2, bottom_features = plot_mean_feature_importance(x2, cols, dataset_name, num_top_features=num_top_features,
+                                                          direction='bottom', title='Most predictive features for non-expert')
+    fig_2.savefig(osp.join(FLAGS.logdir, f'mean_feature_importance_bottom_{num_top_features}.eps'), format='eps')
+
+    fig_3, abs_features = plot_mean_feature_importance(x_abs, cols, dataset_name, num_top_features=num_top_features,
+                                                          title='Overall most predictive features determining the level of expertise')
+    fig_3.savefig(osp.join(FLAGS.logdir, f'mean_absolute_feature_importance_top_{num_top_features}.eps'), format='eps')
+
+    # get original key of features
+    top_feature_names = [k for k, v in col_names[dataset_name].items() if k in top_features or v in top_features]
+    bottom_feature_names = [k for k, v in col_names[dataset_name].items() if k in bottom_features or v in bottom_features]
 
     colors = [[0.9, 0.4, 0.5], [0.5, 0.9, 0.4], [0.4, 0.5, 0.9], [0.9, 0.5, 0.9]]
-    num_cols = 5
-    n_blocks = 10
+    num_cols = 2
+    n_blocks = 4
 
     MIN_Y = None
     MAX_Y = None
 
-    NUM_ROWS = int(np.ceil(len(top_features) / num_cols))
+    NUM_ROWS = 2
+
+    print(top_features, bottom_features)
 
     _, _, axes, fig = plot_all_hist(feature_predictions_per_value, NUM_ROWS, num_cols, colors[2],
                                     col_names=col_names, feature_label_mapping=feature_label_mapping,
                                     unique_features=unique_features_scaled,
                                     mean_predictions=mean_pred, dataset_name=dataset_name,
                                     categorical_names=[], n_blocks=n_blocks,
-                                    min_y=MIN_Y, max_y=MAX_Y, feature_to_use=top_features)
+                                    min_y=MIN_Y, max_y=MAX_Y, feature_to_use=top_feature_names[:4])
 
-    fig.savefig(osp.join(FLAGS.logdir, 'density_top_features.png'))
+    fig.savefig(osp.join(FLAGS.logdir, 'density_top_features.pdf'), format='pdf')
 
     _, _, axes, fig = plot_all_hist(feature_predictions_per_value, NUM_ROWS, num_cols, colors[2],
                                     col_names=col_names, feature_label_mapping=feature_label_mapping,
                                     unique_features=unique_features_scaled,
                                     mean_predictions=mean_pred, dataset_name=dataset_name,
                                     categorical_names=[], n_blocks=n_blocks,
-                                    min_y=MIN_Y, max_y=MAX_Y, feature_to_use=bottom_features)
+                                    min_y=MIN_Y, max_y=MAX_Y, feature_to_use=bottom_feature_names[:4])
 
-    fig.savefig(osp.join(FLAGS.logdir, 'density_bottom_features.png'))
-
+    fig.savefig(osp.join(FLAGS.logdir, 'density_bottom_features.pdf'), format='pdf')
 
     # This is for plotting individual plots when there are multiple models
     """
@@ -192,8 +207,6 @@ def load_nam(argv):
     """
     plt.subplots_adjust(hspace=0.23)
     plt.show()
-
-
 
 
 def load_col_min_max(dataset):
@@ -266,6 +279,7 @@ def plot_mean_feature_importance(data_1,
                                  direction='top',
                                  label_1='Feature Importance',
                                  label_2=None,
+                                 title='Mean Feature Importance'
                                  ):
     """
     Plots the mean feature importance for the top features, ensuring x-axis labels fit.
@@ -304,24 +318,24 @@ def plot_mean_feature_importance(data_1,
 
     elif direction == 'bottom':
         col_names = cols_sorted[-num_top_features:]
-        data_plot= data_1_sorted[-num_top_features:]
+        data_plot = data_1_sorted[-num_top_features:]
 
     else:
         raise ValueError('Invalid direction. Please choose either "top" or "bottom".')
 
     # Adjust figure size based on the number of features to ensure labels fit
     fig_height = max(4, num_top_features)
-    fig, ax = plt.subplots(figsize=(10, fig_height))
+    fig, ax = plt.subplots(figsize=(5, fig_height))
     ind = np.arange((len(col_names)))  # x locations for the groups
 
     # Plot the bars
-    ax.bar(ind, data_plot, width, label='Feature Importance', color='skyblue')
+    ax.bar(ind, data_plot, width, label='Feature Importance', color='skyblue', align='edge')
 
     # Add labels, title, and legend
     ax.set_xticks(ind)
     ax.set_xticklabels(col_names, rotation=45, ha='right')  # Rotate labels for better fit
     ax.set_ylabel('Feature contribution to prediction')
-    ax.set_title(f'Overall Importance: {dataset_name}')
+    ax.set_title('\n'.join(wrap(title, 30)))
     ax.legend(loc='upper right')
 
     # Adjust layout to prevent overlap
@@ -337,7 +351,7 @@ def plot_mean_feature_importance(data_1,
 def plot_all_hist(hist_data, num_rows, num_cols, color_base, col_names, feature_label_mapping,
                   unique_features, categorical_names, mean_predictions, dataset_name,
                   linewidth=3.0, min_y=None, max_y=None, alpha=1.0,
-                  feature_to_use=None, n_blocks=20, color=[0.9, 0.5, 0.9]):
+                  feature_to_use=None, n_blocks=20, color=[0.9, 0.5, 0.9], label=''):
     init_alpha = alpha
     hist_data_pairs = list(hist_data.items())
     hist_data_pairs.sort(key=lambda x: x[0])
@@ -351,11 +365,13 @@ def plot_all_hist(hist_data, num_rows, num_cols, color_base, col_names, feature_
     col_mapping = col_names[dataset_name]
     feature_mapping = feature_label_mapping[dataset_name]
 
+    col_mapping = {k: (v if v != '' else k) for k, v in col_mapping.items()}
+
     if feature_to_use is not None:
         hist_data_pairs = [v for v in hist_data_pairs if v[0] in feature_to_use]
 
-    fig = plt.figure(figsize=(num_cols * 4.5, num_rows * 4.5),
-                     facecolor='w', edgecolor='k')
+    fig = plt.figure(figsize=(num_cols * 6, num_rows * 6),
+                     facecolor='w', edgecolor='k', constrained_layout=True)
 
     axes = []  # Store axes for further use
     for i, (name, pred) in enumerate(hist_data_pairs):
@@ -397,10 +413,9 @@ def plot_all_hist(hist_data, num_rows, num_cols, color_base, col_names, feature_
             min_x -= 0.5
             max_x += 0.5
         ax.set_xlim(min_x, max_x)
-        if i == 5:
-            ax.set_ylabel('Contribution to prediction of level of expertise', fontsize='x-large')
-        ax.set_xlabel(col_mapping[name], fontsize='x-large')
-
+        if i % num_cols == 0:
+            ax.set_ylabel('\n'.join(wrap('Contribution to prediction of level of expertise', 30)), fontsize='xx-large', wrap=True, labelpad=20)
+        ax.set_xlabel('\n'.join(wrap(col_mapping[name], 30)), fontsize='xx-large', wrap=True, labelpad=20)
 
         min_x = np.min(unique_x_data)
         max_x = np.max(unique_x_data)
@@ -421,11 +436,9 @@ def plot_all_hist(hist_data, num_rows, num_cols, color_base, col_names, feature_
                                      edgecolor=color, facecolor=color, alpha=alpha)
             ax.add_patch(rect)
 
-    fig.tight_layout()
+    fig.tight_layout(pad=3)
     fig.show()
     return min_y, max_y, axes, fig
-
-
 
 
 def parse_args() -> dict:

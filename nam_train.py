@@ -99,7 +99,7 @@ flags.DEFINE_integer('gpu', 7, 'Specifies which gpu to use')
 # label can be: expert_cls_label (graduate reading text in graduate domain), expert_status (graduate or not),
 # 2_bq_correct (mean acc on background questions of respective text above 0.6), 2_tq_correct (mean acc on
 # text questions of respective text above 0.6), all_bq_correct (all background questions correct), all_tq_correct
-flags.DEFINE_string('label', 'all_bq_correct', 'Specifies the label to use for classification')
+flags.DEFINE_string('label', 'expert_cls_label', 'Specifies the label to use for classification')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -414,17 +414,17 @@ def single_split_training(data_gen,
         # TODO: move this to config file or somewhere else
         hyper_parameters = {
             'learning_rate': [1e-3, 1e-4],
-            'output_regularization': [0.0, 0.1],
-            'l2_regularization': [0.0, 0.1],
+            'output_regularization': [0.1, 0.3],
+            'l2_regularization': [0.1, 0.3],
             'batch_size': [32],
             'decay_rate': [0.99, 0.995],
-            'dropout': [0.0, 0.5, 0.7],
-            'feature_dropout': [0.0, 0.1],
+            'dropout': [0.3, 0.5, 0.7],
+            'feature_dropout': [0.1, 0.2, 0.3],
             'num_basis_functions': [1000, 2000],
             'units_multiplier': [2, 4, 8],
-            'shallow': [True, False],
-            'tf_seed': [1, 2],
-            'activation': ['relu', 'exu'],
+            'shallow': [False],
+            'tf_seed': [1],
+            'activation': ['relu'],
         }
 
         # create file where to log the results_baselines for the tuning

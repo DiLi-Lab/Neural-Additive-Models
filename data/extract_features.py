@@ -1127,7 +1127,7 @@ def get_combined_features(df_list):
             'TRC_out',
             # 'TRC_in',
         ],
-        feature_aggregations=['mean', 'std', 'skew', 'kurtosis'],
+        feature_aggregations=['mean', 'std'],
     )
 
     data_arr_numeric_2, feature_names_numeric_2 = get_gaze_text_features_from_df_list(

@@ -3,7 +3,7 @@
   "num_cv_folds_outer": 5,
   "num_cv_folds_inner": 5,
   "grid_search_verbosity": 1,
-  "potec_folder": "/Users/debor/repos/PoTeC-data",
+  "potec_folder": "PoTeC-data",
   "random_state": 21,
   "label": "all_bq_correct"
 }
