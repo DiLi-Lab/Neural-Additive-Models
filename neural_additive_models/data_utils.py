@@ -508,7 +508,7 @@ def get_train_test_fold(
         data_y,
         fold_num,
         num_folds,
-        group_split: str = '',
+        group_split: list = None,
         stratified=True,
         random_state=42):
     """Returns a specific fold split for K-Fold cross validation.
@@ -528,7 +528,7 @@ def get_train_test_fold(
       the different folds (only applicable for classification).
     random_state: Seed used by the random number generator.
     group_split: If not empty, the data is split in a stratified fashion, using
-        this column as the group labels.
+        the values in this list as groups.
 
   Returns:
     X and y splits for training and testing and the group labels if applicable.
@@ -537,10 +537,10 @@ def get_train_test_fold(
     (x_test, y_test): Test fold containing 1/`num_folds` fraction of data.
     (group_train, group_test): If group_split is not empty, the group labels
   """
-    if stratified and not group_split:
+    if stratified and group_split is None:
         stratified_k_fold = StratifiedKFold(
             n_splits=num_folds, shuffle=True, random_state=random_state)
-    elif group_split and stratified:
+    elif group_split is not None and stratified:
         stratified_k_fold = StratifiedGroupKFold(n_splits=num_folds)
     else:
         stratified_k_fold = KFold(
@@ -548,7 +548,7 @@ def get_train_test_fold(
 
     assert fold_num <= num_folds and fold_num > 0, 'Pass a valid fold number.'
 
-    if not group_split:
+    if group_split is None:
         for train_index, test_index in stratified_k_fold.split(data_x, data_y):
             if fold_num == 1:
                 x_train, x_test = data_x[train_index], data_x[test_index]

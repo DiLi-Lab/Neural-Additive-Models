@@ -22,7 +22,12 @@ class GradientBoostingCls(Model):
         super().__init__(root, split_criterion, param_grid, **kwargs)
 
     def train(self, X_train, y_train):
-        pass
+        self.model = GradientBoostingClassifier(
+            **self.param_grid,
+        )
+
+        return self.model.fit(X_train, y_train)
+
 
     def predict(self, X_test):
         pass
@@ -37,17 +42,16 @@ class GradientBoostingCls(Model):
 
         message = f"Using custom param grid: {self.param_grid}"
 
-        if self.param_grid is None:
-            self.param_grid = {
-                'n_estimators': [50, 100, 500, 700, 1000, 1200],
-                'max_features': ['sqrt', 'log2', None],
-                'max_depth': [3, 8, 16, 32, 64, None],
-                'criterion': ['friedman_mse', 'squared_error'],
-                'loss': ['log_loss', 'exponential'],
-                'random_state': [21],
-            }
+        self.param_grid = {
+            'n_estimators': [50, 100, 500, 700, 1000, 1200],
+            'max_features': ['sqrt', 'log2', None],
+            'max_depth': [3, 8, 16, 32, 64, None],
+            'criterion': ['friedman_mse', 'squared_error'],
+            'loss': ['log_loss', 'exponential'],
+            'random_state': [21],
+        }
 
-            message = f'Using default param grid: {self.param_grid}'
+        message = f'Using default param grid: {self.param_grid}'
 
         self.write_to_logfile(message)
 
@@ -62,6 +66,8 @@ class GradientBoostingCls(Model):
         rf_clf.fit(X_train, y_train)
 
         best_parameters = rf_clf.best_params_
+
+        self.param_grid = best_parameters
 
         return best_parameters, rf_clf
 

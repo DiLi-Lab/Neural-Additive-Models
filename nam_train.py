@@ -43,11 +43,13 @@ FLAGS = flags.FLAGS
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
+#  {'learning_rate': 0.001, 'output_regularization': 0.1, 'l2_regularization': 0.0, 'batch_size': 32, 'decay_rate': 0.99, 'dropout': 0.7, 'feature_dropout': 0.1, 'num_basis_functions': 2000, 'units_multiplier': 8, 'shallow': False, 'tf_seed': 1}
+
 flags.DEFINE_integer('training_epochs', 100,
                      'The number of epochs to run training for.')
-flags.DEFINE_float('learning_rate', 1e-2, 'Hyperparameter: learning rate.')
-flags.DEFINE_float('output_regularization', 0.3, 'Hyperparameter: feature reg')
-flags.DEFINE_float('l2_regularization', 0.3, 'Hyperparameter: l2 weight decay')
+flags.DEFINE_float('learning_rate', 1e-3, 'Hyperparameter: learning rate.')
+flags.DEFINE_float('output_regularization', 0.1, 'Hyperparameter: feature reg')
+flags.DEFINE_float('l2_regularization', 0.0, 'Hyperparameter: l2 weight decay')
 flags.DEFINE_integer('batch_size', 32, 'Hyperparameter: batch size.')
 flags.DEFINE_string('logdir', f'{THIS_DIR}/results_nam/{datetime.datetime.now().strftime("%Y-%m-%d-%H:%M")}',
                     'Path to dir where to store summaries.')
@@ -55,13 +57,13 @@ flags.DEFINE_string('dataset_name', 'PoTeC',
                     'Name of the dataset to load for training.')
 flags.DEFINE_string('dataset_folder', '/Users/debor/repos/PoTeC-data',
                     'Folder where dataset is. How to load it must be defined in data_utils.py')
-flags.DEFINE_float('decay_rate', 0.92, 'Hyperparameter: Optimizer decay rate')
+flags.DEFINE_float('decay_rate', 0.99, 'Hyperparameter: Optimizer decay rate')
 flags.DEFINE_float('dropout', 0.7, 'Hyperparameter: Dropout rate')
 flags.DEFINE_integer(
     'data_split', 1, 'Dataset split index to use for splitting the training set into val and train. '
                      'Possible values are 1 to `FLAGS.num_splits`.')
 flags.DEFINE_integer('tf_seed', 1, 'seed for tf.')
-flags.DEFINE_float('feature_dropout', 0.2,
+flags.DEFINE_float('feature_dropout', 0.1,
                    'Hyperparameter: Prob. with which features are dropped')
 flags.DEFINE_integer(
     'num_basis_functions', 2000, 'Number of basis functions '
@@ -82,7 +84,7 @@ flags.DEFINE_integer('num_splits', 5, 'Number of data splits to use')
 flags.DEFINE_integer('fold_num', 1, 'Index of the fold to be used')
 flags.DEFINE_string(
     'activation', 'relu', 'Activation function to used in the '
-                         'hidden layer. Possible options: (1) relu, (2) exu')
+                          'hidden layer. Possible options: (1) relu, (2) exu')
 flags.DEFINE_boolean(
     'regression', False, 'Boolean flag indicating whether we '
                          'are solving a regression task or a classification task.')
@@ -99,7 +101,7 @@ flags.DEFINE_integer('gpu', 7, 'Specifies which gpu to use')
 # label can be: expert_cls_label (graduate reading text in graduate domain), expert_status (graduate or not),
 # 2_bq_correct (mean acc on background questions of respective text above 0.6), 2_tq_correct (mean acc on
 # text questions of respective text above 0.6), all_bq_correct (all background questions correct), all_tq_correct
-flags.DEFINE_string('label', 'expert_cls_label', 'Specifies the label to use for classification')
+flags.DEFINE_string('label', 'all_tq_correct', 'Specifies the label to use for classification')
 _N_FOLDS = 5
 GraphOpsAndTensors = graph_builder.GraphOpsAndTensors
 EvaluationMetric = graph_builder.EvaluationMetric
@@ -255,10 +257,9 @@ def training(x_train, y_train, x_validation,
     metric_name = 'RMSE' if FLAGS.regression else 'AUROC'
     tf.reset_default_graph()
     with tf.Graph().as_default():
-        tf.compat.v1.set_random_seed(hyperparameters['tf_seed'])
+        tf.compat.v1.set_random_seed(FLAGS.tf_seed)
         # Setup your training.
         hp_copy = hyperparameters.copy()
-        hp_copy.pop('tf_seed')
         graph_tensors_and_ops, metric_scores = _create_computation_graph(
             x_train, y_train, x_validation, y_validation, hp_copy)
 
@@ -393,7 +394,9 @@ def create_test_train_fold(
 def single_split_training(data_gen,
                           test_data,
                           logdir,
-                          fold):
+                          fold,
+                          hp_tuning_x=None,
+                          hp_tuning_y=None):
     """
     Uses a specific (training, validation) split for NAM training.
         data_gen: Iterator that generates (x_train, y_train), (x_validation, y_validation)
@@ -414,17 +417,16 @@ def single_split_training(data_gen,
         # TODO: move this to config file or somewhere else
         hyper_parameters = {
             'learning_rate': [1e-3, 1e-4],
-            'output_regularization': [0.1, 0.3],
-            'l2_regularization': [0.1, 0.3],
+            'output_regularization': [0.0, 0.2],
+            'l2_regularization': [0.0, 0.2],
             'batch_size': [32],
             'decay_rate': [0.99, 0.995],
             'dropout': [0.3, 0.5, 0.7],
-            'feature_dropout': [0.1, 0.2, 0.3],
+            'feature_dropout': [0.3, 0.5, 0.7],
             'num_basis_functions': [1000, 2000],
             'units_multiplier': [2, 4, 8],
             'shallow': [False],
-            'tf_seed': [1],
-            'activation': ['relu'],
+            'activation': ['relu', 'exu'],
         }
 
         # create file where to log the results_baselines for the tuning
@@ -447,7 +449,7 @@ def single_split_training(data_gen,
 
         for hp_grid in tqdm(hp_combinations):
 
-            train_score, val_score, test_scores, metric_dict = training(x_train, y_train, x_validation, y_validation,
+            train_score, val_score, test_scores, metric_dict = training(x_train, y_train, hp_tuning_x, hp_tuning_y,
                                                                         *test_data, curr_logdir, hp_grid)
 
             if FLAGS.regression and val_score < best_val_score:
@@ -519,7 +521,6 @@ def single_split_training(data_gen,
                 'num_basis_functions': FLAGS.num_basis_functions,
                 'units_multiplier': FLAGS.units_multiplier,
                 'shallow': FLAGS.shallow,
-                'tf_seed': FLAGS.tf_seed,
                 'activation': FLAGS.activation,
             }
 
@@ -533,7 +534,6 @@ def single_split_training(data_gen,
 
 
 def main(argv):
-
     GPU = FLAGS.gpu
     os.environ["CUDA_VISIBLE_DEVICES"] = str(GPU)
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
@@ -556,6 +556,15 @@ def main(argv):
     test_scores_all_models = []
     all_metrics = {}
 
+    # 10% of the data are excluded and used for hp tuning
+    (data_x, data_y), (hp_tuning_x, hp_tuning_y), (split_criterion, split_hp_tuning) = data_utils.get_train_test_fold(
+        data_x, data_y,
+        fold_num=1,
+        num_folds=10,
+        stratified=not FLAGS.regression,
+        group_split=split_criterion
+    )
+
     if FLAGS.all_folds:
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
         tf.logging.info('Dataset: %s, Size: %d', FLAGS.dataset_name, data_x.shape[0])
@@ -564,7 +573,8 @@ def main(argv):
             tf.logging.info('Cross-val fold: %d/%d', fold, _N_FOLDS)
             print(f'Cross-val fold: {fold}/{_N_FOLDS}')
             data_gen, test_data = create_test_train_fold(fold, data_x, data_y, split_criterion)
-            _, _, _, test_scores, metric_dict = single_split_training(data_gen, test_data, FLAGS.logdir, fold)
+            _, _, _, test_scores, metric_dict = single_split_training(data_gen, test_data, FLAGS.logdir, fold,
+                                                                      hp_tuning_x, hp_tuning_y)
 
             test_scores_all_models.append(test_scores)
 
@@ -580,14 +590,18 @@ def main(argv):
         print(f'Dataset: {FLAGS.dataset_name}, Size: {data_x.shape[0]}')
         print(f'Cross-val fold: {FLAGS.fold_num}/{_N_FOLDS}')
         data_gen, test_data = create_test_train_fold(FLAGS.fold_num, data_x, data_y, split_criterion)
-        _, _, _, test_scores_all_models, metric_dict = single_split_training(data_gen, test_data, FLAGS.logdir, FLAGS.fold_num)
+        _, _, _, test_scores_all_models, metric_dict = single_split_training(data_gen, test_data, FLAGS.logdir,
+                                                                             FLAGS.fold_num)
 
         all_metrics[f'fold_{FLAGS.fold_num}'] = metric_dict
 
+    standard_error = np.std(test_scores_all_models, axis=0) / np.sqrt(len(test_scores_all_models))
+
     print(f'Test scores for all models for each fold: {test_scores_all_models}')
-    print(f'Mean test scores for all models: {np.mean(test_scores_all_models, axis=0)}')
+    print(f'Mean test scores for all models: {np.mean(test_scores_all_models, axis=0)}+-{standard_error}')
 
     all_metrics['mean_score_all_folds'] = np.mean(test_scores_all_models, axis=0)
+    all_metrics['standard_error'] = standard_error
 
     with open(f'{FLAGS.logdir}/metrics_dict.txt', 'w', encoding='utf8') as f:
         f.write(str(all_metrics))

@@ -30,26 +30,26 @@ def evaluate_potec_expert_clf(
         num_cv_folds_outer: int = 5,
         num_cv_folds_inner: int = 3,
         grid_search_verbosity: int = 1,
+        hp_tuning: bool = False,
 ):
     random.seed(random_state)
     np.random.seed(random_state)
     today = datetime.now().strftime('%Y-%m-%d-%H:%M')
-    result_folder = root_path / 'results_baselines' / f'{today}_label-{label}_split-{split_criterion_str}'
+    result_folder = root_path / 'results_baselines' / f'{today}_label-{label}_split-{split_criterion_str}{"_hp-tuning" if hp_tuning else ""}'
 
     if not result_folder.exists():
         result_folder.mkdir(parents=True)
 
     # just use those if you don't want to run hp tuning
-    #params_rf = {'criterion': ['gini'], 'max_depth': [32], 'max_features': [None], 'n_estimators': [700],
-             #    'n_jobs': [-1], 'random_state': [21]}
-    #params_gb = {'criterion': ['squared_error'], 'loss': ['log_loss'], 'max_depth': [32], 'max_features': ['log2'],
-             #    'n_estimators': [500], 'random_state': [21]}
-    #params_svc = {'C': [1], 'gamma': ['scale'], 'kernel': ['rbf'], 'random_state': [21]}
+    params_rf = {'criterion': 'entropy', 'max_depth': 2, 'max_features': 'sqrt', 'n_estimators': 500, 'n_jobs': -1,
+                 'random_state': 21}
+    params_gb = {'criterion': 'squared_error', 'loss': 'log_loss', 'max_depth': 32, 'max_features': 'sqrt', 'n_estimators': 50, 'random_state': 21}
+    params_svc = {'C': 1, 'coef0': 0.0, 'degree': 3, 'gamma': 'auto', 'kernel': 'poly', 'random_state': 21}
 
-    rf_model = RandomForest(root=result_folder, split_criterion=split_criterion_str)
+    rf_model = RandomForest(root=result_folder, split_criterion=split_criterion_str, param_grid=params_rf)
     dummy_bsl = DummyBaseline(strategy='most_frequent', root=result_folder, split_criterion=split_criterion_str)
-    gbcl = GradientBoostingCls(root=result_folder, split_criterion=split_criterion_str)
-    svc = SVCls(root=result_folder, split_criterion=split_criterion_str)
+    gbcl = GradientBoostingCls(root=result_folder, split_criterion=split_criterion_str, param_grid=params_gb)
+    svc = SVCls(root=result_folder, split_criterion=split_criterion_str, param_grid=params_svc)
 
     baseline_models = [
         rf_model,
@@ -76,6 +76,20 @@ def evaluate_potec_expert_clf(
 
     outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer)
     inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner)
+    hp_tuning_kf = StratifiedGroupKFold(n_splits=10)
+
+    # exclude the hp test set from
+    hp_splits = list(hp_tuning_kf.split(X, y, groups=split_criterion))
+    hp_split = hp_splits[0]
+    hp_test_index = hp_split[1]
+
+    # exclude the hp test set from the outer folds
+    X = np.delete(X, hp_test_index, axis=0)
+    y = np.delete(y, hp_test_index, axis=0)
+
+    print(len(hp_test_index))
+    print(len(X))
+    print(len(y))
 
     for train_index, test_index in outer_kf.split(X, y, groups=split_criterion):
         print(f'\n{"*" * 50}')
@@ -124,32 +138,43 @@ def evaluate_potec_expert_clf(
         for model in baseline_models:
             print(f'\n--------- Running {model.name} on fold {outer_fold} ---------')
 
-            best_params, best_model = model.train_hp_tuning(
-                X_train_std,
-                y_train,
-                cv_splits=cv_list,
-                grid_search_verbosity=grid_search_verbosity,
-            )
+            # if hp tuning, test hps on first fold
 
-            current_best_score = best_model.best_score_
+            if hp_tuning and outer_fold == 1:
+                # delete current test set indices from hp tuning set
+
+
+                best_params, best_model = model.train_hp_tuning(
+                    X_train_std,
+                    y_train,
+                    cv_splits=cv_list,
+                    grid_search_verbosity=grid_search_verbosity,
+                )
+
+                current_best_score = best_model.best_score_
+
+                if model.best_score < current_best_score:
+                    model.best_score = current_best_score
+                    model.best_params = best_params
+                    print(f' -- new best params for {model.name}: {model.best_params}')
+
+                metric_dict[model.name]['cv_results'].append(best_model.cv_results_)
+
+
+            else:
+                best_params = model.param_grid
+                best_model = model.train(X_train_std, y_train)
 
             pred_proba = best_model.predict_proba(X_test_std)
             fpr, tpr, _ = metrics.roc_curve(np.array(y_test, dtype=int), pred_proba[:, 1], pos_label=1)
             auc = metrics.auc(fpr, tpr)
-
             acc = best_model.score(X_test_std, np.array(y_test, dtype=int))
             print(f' -- test AUC score on fold {outer_fold}: {auc}')
             print(f' -- test accuracy score on fold {outer_fold}: {acc}')
 
-            model.write_to_logfile(f'Best parameters on fold {outer_fold}: {best_params}\n'
-                                   f'Best score on fold {outer_fold}: {current_best_score}\n'
+            model.write_to_logfile(f'Parameters on fold {outer_fold}: {best_params}\n'
                                    f'Test AUC score with best params: {auc}\n'
                                    f'Test accuracy score with best params: {acc}\n\n')
-
-            if model.best_score < current_best_score:
-                model.best_score = current_best_score
-                model.best_params = best_params
-                print(f' -- new best params for {model.name}: {model.best_params}')
 
             metric_dict[model.name]['auc'].append(auc)
             metric_dict[model.name]['accuracy'].append(acc)
@@ -158,7 +183,6 @@ def evaluate_potec_expert_clf(
             metric_dict[model.name]['proba'].append(pred_proba)
             metric_dict[model.name]['label'].append(y_test)
             metric_dict[model.name]['best_params'].append(best_params)
-            metric_dict[model.name]['cv_results'].append(best_model.cv_results_)
 
         outer_fold += 1
 
@@ -169,8 +193,10 @@ def evaluate_potec_expert_clf(
         print(f'*************** {model.name} RESULTS *****************')
         final_mean_score = round(np.array(metric_dict[model.name]['accuracy']).mean(), 4)
         print(f' -- accuracy mean score over all folds : {final_mean_score}')
-        final_mean_score = round(np.array(metric_dict[model.name]['auc']).mean(), 4)
-        print(f' -- auc mean score over all folds : {final_mean_score}')
+        aucs = np.array(metric_dict[model.name]['auc'])
+        final_mean_score = round(aucs.mean(), 3)
+        se = round(np.std(aucs, ddof=1) / np.sqrt(np.size(aucs)), 3)
+        print(f' -- auc mean score over all folds : {final_mean_score} (SE: {se})')
 
     with open(result_folder / 'metric_dict.txt', 'w', encoding='utf8') as f:
         f.write(str(metric_dict))
@@ -185,13 +211,19 @@ def parse_args() -> dict:
         '--config',
         type=str,
         help='Path to config file',
-        default='evaluation_configs/config_baseline_hp_tuning_2_labels_new-reader-split_label-all_bq_correct.json'
+        default='evaluation_configs/config_baseline_hp_tuning_2_labels_new-reader-split_label_expert_cls.json',
     )
 
     parser.add_argument(
         '--data-folder',
         type=str,
         help='Path to the potec folder',
+    )
+
+    parser.add_argument(
+        '--hp-tuning',
+        action='store_true',
+        help='Whether to run hyperparameter tuning',
     )
     args = parser.parse_args()
     return vars(args)
@@ -206,4 +238,4 @@ if __name__ == '__main__':
     if arguments['data_folder'] is not None:
         config['potec_folder'] = arguments['data_folder']
 
-    evaluate_potec_expert_clf(root_path=root, **config)
+    evaluate_potec_expert_clf(root_path=root, hp_tuning=arguments['hp_tuning'], **config)

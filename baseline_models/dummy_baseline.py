@@ -20,9 +20,9 @@ class DummyBaseline(Model):
         dummy_clf = DummyClassifier(strategy=self.strategy)
         dummy_clf.fit(X_train, np.array(y_train, dtype=int))
 
-        params = dummy_clf.get_params()
+        self.param_grid = dummy_clf.get_params()
 
-        return params, dummy_clf
+        return dummy_clf
 
     def predict(self, X_test):
         raise NotImplementedError
