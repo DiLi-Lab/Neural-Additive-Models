@@ -199,8 +199,8 @@ def load_potec_data(split_criterion_str, data_folder: str = '', log_dir: str = '
         osp.makedir('PoTeC-data')
 
     try:
-        print('Loading already preprocessed potec data')
         x_df = pd.read_csv(filename)
+        print('Loading already preprocessed potec data')
     except FileNotFoundError:
         X, feature_names = get_combined_features(potec_sp_dfs)
 
@@ -510,7 +510,8 @@ def get_train_test_fold(
         num_folds,
         group_split: list = None,
         stratified=True,
-        random_state=42):
+        random_state=42,
+        shuffle=False):
     """Returns a specific fold split for K-Fold cross validation.
 
   Randomly split dataset into `num_folds` consecutive folds and returns the fold
@@ -541,7 +542,10 @@ def get_train_test_fold(
         stratified_k_fold = StratifiedKFold(
             n_splits=num_folds, shuffle=True, random_state=random_state)
     elif group_split is not None and stratified:
-        stratified_k_fold = StratifiedGroupKFold(n_splits=num_folds)
+        if shuffle:
+            stratified_k_fold = StratifiedGroupKFold(n_splits=num_folds, shuffle=shuffle, random_state=random_state)
+        else:
+            stratified_k_fold = StratifiedGroupKFold(n_splits=num_folds)
     else:
         stratified_k_fold = KFold(
             n_splits=num_folds, shuffle=True, random_state=random_state)

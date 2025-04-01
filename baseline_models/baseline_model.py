@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import os
 from datetime import datetime
+from itertools import product
 from pathlib import Path
+
+import numpy as np
+from sklearn import metrics
 
 
 class Model:
@@ -39,20 +43,47 @@ class Model:
         with open(self.logfile_path, 'w', encoding='utf8') as lf:
             lf.write(f'{self.name} log params\n')
 
-    def train(self, X_train, y_train):
-        raise NotImplementedError
+    def train(self, x_train, y_train, params):
+        return self.get_model(params).fit(x_train, y_train)
 
     def predict(self, X_test):
         raise NotImplementedError
 
     def train_hp_tuning(
             self,
-            X_train,
+            x_train,
             y_train,
-            cv_splits,
-            grid_search_verbosity=1,
+            x_val,
+            y_val,
     ):
-        raise NotImplementedError
+
+        all_combos = [dict(zip(self.param_grid.keys(), values)) for values in product(*self.param_grid.values())]
+        self.write_to_logfile(f'HP TUNING: testing {len(all_combos)} combos\n'
+                              f'Param grid: {self.param_grid}')
+
+        best_auc_score = -1
+
+        for parameters in all_combos:
+            self.write_to_logfile(f'Testing {parameters}')
+
+            model = self.get_model(params=parameters)
+
+            model.fit(x_train, y_train)
+
+            pred_proba = model.predict_proba(x_val)
+            fpr, tpr, _ = metrics.roc_curve(np.array(y_val, dtype=int), pred_proba[:, 1], pos_label=1)
+            auc = metrics.auc(fpr, tpr)
+            if auc > best_auc_score:
+                self.best_params = parameters
+                best_auc_score = auc
+                self.write_to_logfile(f'Found new best parameters: {self.best_params}')
+                self.save_best_params()
+
+            acc = model.score(x_val, np.array(y_val, dtype=int))
+
+            self.write_to_logfile(f'Scores: AUROC: {auc}, ACCURACY: {acc}')
+
+        return self.best_params
 
     def write_to_logfile(self, message: str) -> None:
         with open(self.logfile_path, 'a', encoding='utf8') as lf:
@@ -77,3 +108,5 @@ class Model:
         with open(self.result_folder / 'best_params.txt', 'w', encoding='utf8') as f:
             f.write(str(self.best_params))
 
+    def get_model(self, params):
+        raise NotImplementedError

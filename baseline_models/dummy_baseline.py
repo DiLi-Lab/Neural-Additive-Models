@@ -16,38 +16,19 @@ class DummyBaseline(Model):
         super().__init__(root, split_criterion, **kwargs)
         self.strategy = strategy
 
-    def train(self, X_train, y_train):
+    def train(self, x_train, y_train, params):
         dummy_clf = DummyClassifier(strategy=self.strategy)
-        dummy_clf.fit(X_train, np.array(y_train, dtype=int))
+        dummy_clf.fit(x_train, np.array(y_train, dtype=int))
 
         self.param_grid = dummy_clf.get_params()
 
         return dummy_clf
 
-    def predict(self, X_test):
-        raise NotImplementedError
-
     def train_hp_tuning(
             self,
-            X_train,
+            x_train,
             y_train,
-            cv_splits,
-            grid_search_verbosity=1,
+            x_val,
+            y_val,
     ):
-        param_grid = {'strategy': [self.strategy]}
-
-        dummy_clf = GridSearchCV(
-            estimator=DummyClassifier(),
-            param_grid=param_grid,
-            verbose=grid_search_verbosity,
-            return_train_score=True,
-            cv=cv_splits,
-        )
-
-        dummy_clf.fit(X_train, y_train)
-
-        best_parameters = dummy_clf.best_params_
-
-        return best_parameters, dummy_clf
-
-
+        return {'strategy': self.strategy}

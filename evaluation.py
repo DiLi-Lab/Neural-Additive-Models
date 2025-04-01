@@ -41,15 +41,19 @@ def evaluate_potec_expert_clf(
         result_folder.mkdir(parents=True)
 
     # just use those if you don't want to run hp tuning
-    params_rf = {'criterion': 'entropy', 'max_depth': 2, 'max_features': 'sqrt', 'n_estimators': 500, 'n_jobs': -1,
-                 'random_state': 21}
-    params_gb = {'criterion': 'squared_error', 'loss': 'log_loss', 'max_depth': 32, 'max_features': 'sqrt', 'n_estimators': 50, 'random_state': 21}
-    params_svc = {'C': 1, 'coef0': 0.0, 'degree': 3, 'gamma': 'auto', 'kernel': 'poly', 'random_state': 21}
+    params_rf = {'n_estimators': 100, 'max_features': 'sqrt', 'max_depth': 4, 'criterion': 'entropy',
+                 'random_state': 21, 'n_jobs': -1}
+    params_gb = {'n_estimators': 500, 'max_features': 'log2', 'max_depth': 16, 'criterion': 'friedman_mse',
+                 'loss': 'log_loss', 'random_state': 21}
+    params_svc = {'C': 1, 'kernel': 'sigmoid', 'degree': 3, 'gamma': 'scale', 'random_state': 21, 'coef0': 0.0}
 
-    rf_model = RandomForest(root=result_folder, split_criterion=split_criterion_str, param_grid=params_rf)
+    rf_model = RandomForest(root=result_folder, split_criterion=split_criterion_str,
+                            param_grid=params_rf if not hp_tuning else None)
     dummy_bsl = DummyBaseline(strategy='most_frequent', root=result_folder, split_criterion=split_criterion_str)
-    gbcl = GradientBoostingCls(root=result_folder, split_criterion=split_criterion_str, param_grid=params_gb)
-    svc = SVCls(root=result_folder, split_criterion=split_criterion_str, param_grid=params_svc)
+    gbcl = GradientBoostingCls(root=result_folder, split_criterion=split_criterion_str,
+                               param_grid=params_gb if not hp_tuning else None)
+    svc = SVCls(root=result_folder, split_criterion=split_criterion_str,
+                param_grid=params_svc if not hp_tuning else None)
 
     baseline_models = [
         rf_model,
@@ -64,40 +68,35 @@ def evaluate_potec_expert_clf(
 
     data_split_dict = {}
 
-    X, y, feature_names, split_criterion = data_utils.load_dataset('PoTeC', split_criterion_str,
-                                                                   potec_folder, str(result_folder), label)
+    print(potec_folder)
 
-    print(f'# expert reading (experts reading text in their expert domain): {np.count_nonzero(y == 1)}')
-    print(f'# non-expert reading (beginners reading text OR experts reading text in non-expert domain): '
-          f'{np.count_nonzero(y == 0)}')
+    data_x, data_y, column_names, split_criterion = data_utils.load_dataset('PoTeC', split_criterion_str,
+                                                                            potec_folder, str(result_folder), label)
+
+    # 10% of the data are excluded and used for hp tuning
+    (data_x, data_y), (hp_tuning_x, hp_tuning_y), (split_criterion, split_hp_tuning) = data_utils.get_train_test_fold(
+        data_x, data_y,
+        fold_num=1,
+        num_folds=10,
+        stratified=True,
+        group_split=split_criterion
+    )
+
+    print(f'# class 1: {np.count_nonzero(data_y == 1)}')
+    print(f'# class 0: '
+          f'{np.count_nonzero(data_y == 0)}')
 
     outer_fold = 1
-    best_score = 0
 
     outer_kf = StratifiedGroupKFold(n_splits=num_cv_folds_outer)
-    inner_kf = StratifiedGroupKFold(n_splits=num_cv_folds_inner)
-    hp_tuning_kf = StratifiedGroupKFold(n_splits=10)
 
-    # exclude the hp test set from
-    hp_splits = list(hp_tuning_kf.split(X, y, groups=split_criterion))
-    hp_split = hp_splits[0]
-    hp_test_index = hp_split[1]
-
-    # exclude the hp test set from the outer folds
-    X = np.delete(X, hp_test_index, axis=0)
-    y = np.delete(y, hp_test_index, axis=0)
-
-    print(len(hp_test_index))
-    print(len(X))
-    print(len(y))
-
-    for train_index, test_index in outer_kf.split(X, y, groups=split_criterion):
+    for train_index, test_index in outer_kf.split(data_x, data_y, groups=split_criterion):
         print(f'\n{"*" * 50}')
         print(f'***************** Outer fold {outer_fold} *******************')
         print(f'{"*" * 50}')
 
-        X_train, X_test = X[train_index], X[test_index]
-        y_train, y_test = y[train_index], y[test_index]
+        X_train, X_test = data_x[train_index], data_x[test_index]
+        y_train, y_test = data_y[train_index], data_y[test_index]
 
         outer_train_ids = [split_criterion[i] for i in train_index]
         outer_test_ids = [split_criterion[i] for i in test_index]
@@ -117,53 +116,22 @@ def evaluate_potec_expert_clf(
         X_train_std = scaler.fit_transform(X_train)
         # standardize test data as well
         X_test_std = scaler.transform(X_test)
-
-        cv_list = list(inner_kf.split(X_train_std, y_train, groups=outer_train_ids))
-
-        # log inner fold properties
-        for inner_fold_idx, (inner_train_indices, inner_test_indices) in enumerate(cv_list):
-            inner_train_ids = [outer_train_ids[i] for i in inner_train_indices]
-            inner_test_ids = [outer_train_ids[i] for i in inner_test_indices]
-            y_train_inner, y_test_inner = y_train[inner_train_ids], y_train[inner_test_ids]
-
-            data_split_dict[f'outer_fold_{outer_fold}'][f'inner_fold_{inner_fold_idx}'] = {
-                f'inner_train_{split_criterion_str}_ids': inner_train_ids,
-                f'inner_test_{split_criterion_str}_ids': inner_test_ids,
-                'inner_train_index': inner_train_indices,
-                'inner_test_index': inner_test_indices,
-                'y_train_inner': y_train_inner,
-                'y_test_inner': y_test_inner,
-            }
+        x_hp_tuning_std = scaler.transform(hp_tuning_x)
 
         for model in baseline_models:
             print(f'\n--------- Running {model.name} on fold {outer_fold} ---------')
 
-            # if hp tuning, test hps on first fold
-
+            # if hp tuning, test hps on first fold on separate validation fold
             if hp_tuning and outer_fold == 1:
-                # delete current test set indices from hp tuning set
+                best_params = model.train_hp_tuning(X_train_std, y_train, x_hp_tuning_std, hp_tuning_y)
+                model.param_grid = best_params
 
-
-                best_params, best_model = model.train_hp_tuning(
-                    X_train_std,
-                    y_train,
-                    cv_splits=cv_list,
-                    grid_search_verbosity=grid_search_verbosity,
-                )
-
-                current_best_score = best_model.best_score_
-
-                if model.best_score < current_best_score:
-                    model.best_score = current_best_score
-                    model.best_params = best_params
-                    print(f' -- new best params for {model.name}: {model.best_params}')
-
-                metric_dict[model.name]['cv_results'].append(best_model.cv_results_)
-
+                # train model again using best params
+                best_model = model.train(X_train_std, y_train, best_params)
 
             else:
                 best_params = model.param_grid
-                best_model = model.train(X_train_std, y_train)
+                best_model = model.train(X_train_std, y_train, best_params)
 
             pred_proba = best_model.predict_proba(X_test_std)
             fpr, tpr, _ = metrics.roc_curve(np.array(y_test, dtype=int), pred_proba[:, 1], pos_label=1)

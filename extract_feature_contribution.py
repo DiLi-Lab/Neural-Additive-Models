@@ -27,11 +27,13 @@ def inverse_min_max_scaler(x, min_val, max_val):
 def load_nam(argv):
     del argv
 
-    logs_model = 'in_paper/2025-01-21-21:29_label-all_tq_correct_split-reader_id'
+    #logs_model = 'best_run_10_hps_exu/2025-03-30-16:50_label-all_bq_correct_split-reader_id'
+    #logs_model = "best_run_10_hps_exu/2025-03-30-16:50_label-all_tq_correct_split-reader_id"
+    logs_model = "best_run_10_hps_exu/2025-03-30-16:51_label-expert_cls_label_split-reader_id"
     assert logs_model is not None, "Please provide the path to load the model on line 30."
 
     # expert_cls_label, all_tq_correct, all_bq_correct
-    label = "all_tq_correct"
+    label = "expert_cls_label"
     assert label is not None, "Please provide the label on line 34."
 
     dir_this_file = osp.dirname(osp.abspath(__file__))
@@ -51,6 +53,14 @@ def load_nam(argv):
     col_min_max = load_col_min_max(dataset)
 
     data_x, data_y, feature_names, split_criterion = data_utils.reformat_data(dataset, dataset_name)
+
+    (data_x, data_y), (hp_tuning_x, hp_tuning_y), (split_criterion, split_hp_tuning) = data_utils.get_train_test_fold(
+        data_x, data_y,
+        fold_num=1,
+        num_folds=10,
+        stratified=not FLAGS.regression,
+        group_split=split_criterion
+    )
 
     (x_train_all, y_train_all), (test_x, test_y), (groups_x, groups_y) = data_utils.get_train_test_fold(
         data_x,

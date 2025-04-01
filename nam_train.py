@@ -43,7 +43,6 @@ FLAGS = flags.FLAGS
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
-#  {'learning_rate': 0.001, 'output_regularization': 0.1, 'l2_regularization': 0.0, 'batch_size': 32, 'decay_rate': 0.99, 'dropout': 0.7, 'feature_dropout': 0.1, 'num_basis_functions': 2000, 'units_multiplier': 8, 'shallow': False, 'tf_seed': 1}
 
 flags.DEFINE_integer('training_epochs', 100,
                      'The number of epochs to run training for.')
