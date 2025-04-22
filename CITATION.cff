@@ -1,0 +1,23 @@
+ff-version: 1.2.0
+message: "If you use this code, please cite it as below."
+preferred-citation:
+  authors:
+  - family-names: "Jakobi"
+    given-names: "Deborah N."
+  - family-names: "Reich"
+    given-names: "David R."
+  - family-names: "Prasse"
+    given-names: "Paul"
+  - family-names: "Jäger"
+    given-names: "Lena A."
+  title: "Neural Additive Models Uncover Predictive Gaze Features in Reading"
+  type: conference-paper
+  year: 2025
+  collection-type: proceedings
+  collection-title: "2025 Symposium on Eye Tracking Research and Applications"
+  collection-location: "Tokyo, Japan"
+  collection-series: "ETRA '25"
+  publisher:
+    name: "Association for Computing Machinery"
+    address: New York, NY, USA
+  url: "https://github.com/DiLi-Lab/Neural-Additive-Models"
